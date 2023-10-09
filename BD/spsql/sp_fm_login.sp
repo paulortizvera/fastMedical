@@ -23,10 +23,12 @@ create proc sp_fm_login
    @i_contrasena  varchar(50) = null,
    @i_correo      varchar(50) = null,
    @i_otp		  varchar(50) = null,
+   @i_tipo_otp    char(1) = null,
    @o_exists      int = null out)
 as
   declare @w_return  int,
           @w_error   int,
+		  @w_sev     int,
 		  @w_msg     varchar(200),
 		  @w_otp     int,
 		  @w_login   varchar(50),
@@ -115,6 +117,7 @@ end*/
 /* Desbloquear */
 if @i_operacion = 'B' 
 begin
+	/* otp creacion */
 	if(@i_modo = 0)
 	begin
 		if exists(select 1 from usuario where correo = @i_correo)
@@ -132,15 +135,15 @@ begin
 				where correo = @i_correo
 			end
 
-			insert into correo_otp (correo, otp, fecha_registro, estado, login) 
-			values (@i_correo, @w_otp, GETDATE(), 'V', @w_login)
+			insert into correo_otp (correo, otp, fecha_registro, tipo, estado, login) 
+			values (@i_correo, @w_otp, GETDATE(), @i_tipo_otp, 'V', @w_login)
 
 			select	'CORREO'	= @i_correo,
 					'OTP'		= @w_otp 
 		end
 	end
 	/* Validar otp */
-	if(@i_modo = 1)
+	if(@i_modo = 2)
 	begin
 		/* Actualizar correo anterior */
 		if exists(select 1 from correo_otp where correo = @i_correo and otp = @i_otp and estado = 'V')
@@ -165,9 +168,9 @@ errors:
 if @w_return <> 0 begin
     exec sp_fm_error
     @s_date = @s_date,
-    @i_num  = 1,
+    @i_num  = @w_error,
     @i_msg  = @w_msg,
-	@i_sev  = 0
+	@i_sev  = @w_sev
 
     return @w_return
 end

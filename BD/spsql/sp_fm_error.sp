@@ -33,10 +33,10 @@ select @w_error = convert(varchar,@i_num) + ' ' + @i_msg
 raiserror (@w_error, -1, -1);
 
 /* Si la severidad es 1 ejecuta un rollback */
-if(@i_sev = 0)
-	return
-else
+if(@i_sev = 1)
 	rollback tran
+else
+	return
 
 return
 

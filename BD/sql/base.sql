@@ -68,6 +68,7 @@ create table correo_otp(
 	correo varchar(50) not null,
 	otp int not null,
 	fecha_registro datetime not null,
+	tipo char(1) not null,
 	estado char(1) not null default 'V',
 	login varchar(50) not null,
 	constraint fk_correo_otp_login foreign key (login) references usuario(login) on update cascade
