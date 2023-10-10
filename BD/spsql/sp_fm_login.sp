@@ -29,7 +29,6 @@ as
   declare @w_return  int,
           @w_error   int,
 		  @w_sev     int,
-		  @w_msg     varchar(200),
 		  @w_otp     int,
 		  @w_login   varchar(50),
           @w_sp_name varchar ( 32 )
@@ -43,9 +42,8 @@ begin
 	if not exists(select 1 from usuario where login = @i_login and contrasena = @i_contrasena)
 	begin
 		select  @o_exists = 0,
-		@w_error = 1,
-		@w_return = 1,
-		@w_msg = 'Usuario no existe'
+		@w_error = 100, --Usuario no existe
+		@w_return = 100
 		goto errors
 	end
 	else
@@ -54,9 +52,8 @@ begin
 		if exists(select 1 from usuario where estado <> 'A')
 		begin
 			select  @o_exists = 0,
-			@w_error = 2,
-			@w_return = 2,
-			@w_msg = 'El usuario no se encuentra activo'
+			@w_error = 101, --El usuario no se encuentra activo
+			@w_return = 101
 			goto errors
 		end
 		
@@ -64,9 +61,8 @@ begin
 		if exists(select * from usuario where fecha_modificacion is not null and datediff(month, GETDATE(),fecha_modificacion) > 3)
 		begin
 			select  @o_exists = 0,
-			@w_error = 3,
-			@w_return = 3,
-			@w_msg = 'Contraseña caducada'
+			@w_error = 102, --Contraseña caducada
+			@w_return = 102
 			goto errors
 		end
 
@@ -90,9 +86,8 @@ begin
 	if not exists(select 1 from usuario where login = @i_login and contrasena = @i_contrasena)
 	begin
 		select  @o_exists = 0,
-		@w_error = 1,
-		@w_return = 1,
-		@w_msg = 'Usuario no existe'
+		@w_error = 100, -- Usuario no existe
+		@w_return = 100
 		goto errors
 	end
 	else
@@ -101,9 +96,8 @@ begin
 		if exists(select 1 from usuario where estado <> 'A')
 		begin
 			select  @o_exists = 0,
-			@w_error = 2,
-			@w_return = 2,
-			@w_msg = 'El usuario no se encuentra activo'
+			@w_error = 101, --El usuario no se encuentra activo
+			@w_return = 101
 			goto errors
 		end
 
@@ -169,7 +163,6 @@ if @w_return <> 0 begin
     exec sp_fm_error
     @s_date = @s_date,
     @i_num  = @w_error,
-    @i_msg  = @w_msg,
 	@i_sev  = @w_sev
 
     return @w_return

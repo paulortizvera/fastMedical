@@ -27,6 +27,22 @@ as
 ----------------------------------------------------
 select @w_sp_name  = object_name( @@procid )
 
+/* Si no se envia un mensaje lo busca en la tabla */
+if(@i_msg is null)
+begin
+	select @i_sev = severidad,
+		@i_msg = mensaje
+	from errores
+	where numero = @i_num
+
+	if @@rowcount != 1
+	begin
+		select @i_msg = 'No hay mensaje asociado'
+		select @i_sev = 0
+	end
+
+end
+
 select @w_error = convert(varchar,@i_num) + ' ' + @i_msg
 
 /* Desplegar mensaje de error con número */

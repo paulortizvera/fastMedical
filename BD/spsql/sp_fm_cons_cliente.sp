@@ -1,21 +1,21 @@
 use fastmedical
 go
-if exists (select 1 from sysobjects where  name = 'sp_fm_cons_profesional') 
+if exists (select 1 from sysobjects where  name = 'sp_fm_cons_cliente') 
 begin
-   drop proc sp_fm_cons_profesional
+   drop proc sp_fm_cons_cliente
 end
 go
 /**************************************************************************/
 /* Aplicacion        : TFM - Sistema médico                               */
-/* Proposito         : SP de Consulta de profesionales                    */
-/* Archivo           : sp_fm_cons_profesional.sp                          */
+/* Proposito         : SP de Consulta de Clientes                         */
+/* Archivo           : sp_fm_cons_cliente.sp                              */
 /* Base de datos     : fastmedical                                        */
 /****************************  MODIFICACIONES  ****************************/
 /*   FECHA        AUTOR                RAZON                              */
 /* 15/09/2023   Paul Ortiz Vera      Emision inicial                      */
 /**************************************************************************/
 
-create proc sp_fm_cons_profesional
+create proc sp_fm_cons_cliente
  ( @s_date        datetime,
    @i_operacion   char(1),
    @i_modo        int = null,
@@ -25,8 +25,6 @@ as
   declare @w_return  int,
           @w_error   int,
 		  @w_sev     int,
-		  @w_otp     int,
-		  @w_login   varchar(50),
           @w_sp_name varchar ( 32 )
 
 ----------------------------------------------------
@@ -38,24 +36,26 @@ begin
 	/* Consultar toda la tabla */
 	if(@i_modo = 0)
 	begin
-		select	'CODIGO'          = codigo,
-			'TIPO'			      = tipo,
-			'FECHA_MODIFICACION'  = fecha_modificacion,
+		select	'ID'              = id,
+			'ENFERMEDAD'          = enfermedad,
 			'DOCUMENTACION'       = documentacion,
+			'COMENTARIO'          = comentario,
+			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'ESTADO'              = estado,
 			'LOGIN'               = login
-		from profesional
+		from cliente
 	end
 	/* Consultar solo activos */
 	if(@i_modo = 1)
 	begin
-		select	'CODIGO'          = codigo,
-			'TIPO'			      = tipo,
-			'FECHA_MODIFICACION'  = fecha_modificacion,
+		select	'ID'              = id,
+			'ENFERMEDAD'          = enfermedad,
 			'DOCUMENTACION'       = documentacion,
+			'COMENTARIO'          = comentario,
+			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'ESTADO'              = estado,
 			'LOGIN'               = login
-		from profesional
+		from cliente
 		where estado = 'A'
 	end
 
@@ -67,29 +67,28 @@ begin
 	/* Consultar usuario por login*/
 	if(@i_modo = 0)
 	begin
-		select	'CODIGO'          = codigo,
-			'TIPO'			      = tipo,
-			'ESPECIALIDAD'        = especialidad,
-			'FECHA_MODIFICACION'  = fecha_modificacion,
+		select	'ID'              = id,
+			'ENFERMEDAD'          = enfermedad,
 			'DOCUMENTACION'       = documentacion,
 			'COMENTARIO'          = comentario,
-			'ESTADO'              = estado
-		from profesional
+			'FECHA_MODIFICACION'  = fecha_modificacion,
+			'ESTADO'              = estado,
+			'LOGIN'               = login
+		from cliente
 		where login = @i_login
 	end
 	/* Consultar usuario por correo*/
 	if(@i_modo = 1)
 	begin
-		select	'CODIGO'          = p.codigo,
-			'TIPO'			      = p.tipo,
-			'ESPECIALIDAD'        = p.especialidad,
-			'FECHA_MODIFICACION'  = p.fecha_modificacion,
-			'DOCUMENTACION'       = p.documentacion,
-			'COMENTARIO'          = p.comentario,
-			'ESTADO'              = p.estado,
-			'LOGIN'               = p.login
-		from profesional p inner join usuario u
-		on p.login = u.login
+		select	'ID'              = c.id,
+			'ENFERMEDAD'          = c.enfermedad,
+			'DOCUMENTACION'       = c.documentacion,
+			'COMENTARIO'          = c.comentario,
+			'FECHA_MODIFICACION'  = c.fecha_modificacion,
+			'ESTADO'              = c.estado,
+			'LOGIN'               = c.login
+		from cliente c inner join usuario u
+		on c.login = u.login
 		where u.correo = @i_correo
 	end
 end

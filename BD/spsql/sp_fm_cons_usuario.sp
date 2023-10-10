@@ -22,8 +22,7 @@ create proc sp_fm_cons_usuario
    @i_login       varchar(50) = null,
    @i_contrasena  varchar(50) = null,
    @i_correo      varchar(50) = null,
-   @i_otp		  varchar(50) = null,
-   @o_exists      int = null out)
+   @i_otp		  varchar(50) = null)
 as
   declare @w_return  int,
           @w_error   int,

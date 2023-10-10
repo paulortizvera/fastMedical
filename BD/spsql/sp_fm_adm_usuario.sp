@@ -34,8 +34,7 @@ create proc sp_fm_adm_usuario
    @i_fecha_modificacion  date = null,
    @i_rol         char(1) = null,
    @i_estado      char(1) = null,
-   @i_otp		  varchar(50) = null,
-   @o_exists      int = null out)
+   @i_otp		  varchar(50) = null)
 as
   declare @w_return  int,
           @w_error   int,
@@ -55,22 +54,16 @@ begin
 	/* Validar Login */
 	if exists(select 1 from usuario where login = @i_login)
 	begin
-		select  @o_exists = 0,
-		@w_error = 200,
-		@w_return = 200,
-		@w_sev = 0,
-		@w_msg = 'Login ya existe'
+		select  @w_error = 200, --El login ya fue registrado por otro usuario
+		@w_return = 200
 		goto errors
 	end
 
 	/* Validar Login */
 	if exists(select 1 from usuario where correo = @i_correo)
 	begin
-		select  @o_exists = 0,
-		@w_error = 201,
-		@w_return = 201,
-		@w_sev = 0,
-		@w_msg = 'El correo ya fue registrado previamente'
+		select  @w_error = 201, --El correo ya fue registrado previamente por otro usuario
+		@w_return = 201
 		goto errors
 	end
 
@@ -99,25 +92,11 @@ begin
 	/* Actualizar información del usuario */
 	if(@i_modo = 0)
 	begin
-		/* Validar Login */
-		if exists(select 1 from usuario where login = @i_login)
+		/* Validar Login y correo*/
+		if not exists(select 1 from usuario where login = @i_login or correo = @i_correo)
 		begin
-			select  @o_exists = 0,
-			@w_error = 202,
-			@w_return = 202,
-			@w_sev = 0,
-			@w_msg = 'El usuario a actualizar no existe'
-			goto errors
-		end
-
-		/* Validar Login */
-		if exists(select 1 from usuario where correo = @i_correo)
-		begin
-			select  @o_exists = 0,
-			@w_error = 203,
-			@w_return = 203,
-			@w_sev = 0,
-			@w_msg = 'El usuario a actualizar no existe'
+			select  @w_error = 202, --El usuario a actualizar no existe
+			@w_return = 202
 			goto errors
 		end
 
@@ -138,11 +117,8 @@ begin
 		/* Validar rol de usuario logeado*/
 		if not exists(select 1 from usuario where login = @s_login and rol = 'A')
 		begin
-			select  @o_exists = 0,
-			@w_error = 204,
-			@w_return = 204,
-			@w_sev = 0,
-			@w_msg = 'El usuario no tiene permisos para actualizar roles'
+			select  @w_error = 203, --El usuario no tiene permisos para actualizar roles
+			@w_return = 203
 			goto errors
 		end
 
@@ -156,11 +132,8 @@ begin
 		/* Validar rol de usuario logeado*/
 		if not exists(select 1 from usuario where login = @s_login and rol = 'A')
 		begin
-			select  @o_exists = 0,
-			@w_error = 205,
-			@w_return = 205,
-			@w_sev = 0,
-			@w_msg = 'El usuario no tiene permisos para actualizar estados'
+			select  @w_error = 204, --El usuario no tiene permisos para actualizar estados
+			@w_return = 204
 			goto errors
 		end
 
