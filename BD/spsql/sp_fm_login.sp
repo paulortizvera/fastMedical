@@ -16,15 +16,14 @@ go
 /**************************************************************************/
 
 create proc sp_fm_login
- ( @s_date        datetime,
+ ( @s_date        datetime, --Fecha
    @i_operacion   char(1),
    @i_modo        int = null,
    @i_login       varchar(50) = null,
    @i_contrasena  varchar(50) = null,
    @i_correo      varchar(50) = null,
    @i_otp		  varchar(50) = null,
-   @i_tipo_otp    char(1) = null,
-   @o_exists      int = null out)
+   @i_tipo_otp    char(1) = null)
 as
   declare @w_return  int,
           @w_error   int,
@@ -39,44 +38,78 @@ select @w_sp_name  = object_name( @@procid )
 /* Search */
 if @i_operacion = 'S' 
 begin
-	if not exists(select 1 from usuario where login = @i_login and contrasena = @i_contrasena)
+	if(@i_modo = 0)
 	begin
-		select  @o_exists = 0,
-		@w_error = 100, --Usuario no existe
-		@w_return = 100
-		goto errors
-	end
-	else
-	begin
-		/* Validar vigencia de contraseña */
-		if exists(select 1 from usuario where estado <> 'A')
+		if not exists(select 1 from usuario where login = @i_login)
 		begin
-			select  @o_exists = 0,
-			@w_error = 101, --El usuario no se encuentra activo
-			@w_return = 101
+			select  @w_error = 100, --Usuario no existe
+			@w_return = 100
 			goto errors
 		end
+		else
+		begin
+			/* Validar vigencia de contraseña */
+			if exists(select 1 from usuario where estado <> 'A')
+			begin
+				select  @w_error = 101, --El usuario no se encuentra activo
+				@w_return = 101
+				goto errors
+			end
 		
-		/* Si la contraseña tiene caducada más de 3 meses debe actualizar */
-		if exists(select * from usuario where fecha_modificacion is not null and datediff(month, GETDATE(),fecha_modificacion) > 3)
+			/* Si la contraseña tiene caducada más de 3 meses debe actualizar */
+			if exists(select * from usuario where fecha_modificacion is not null and datediff(month, GETDATE(),fecha_modificacion) > 3)
+			begin
+				select  @w_error = 102, --Contraseña caducada
+				@w_return = 102
+				goto errors
+			end
+
+			select	'LOGIN'			= login,
+					'CONTRASENA'	= contrasena,
+					'NOMBRE'		= nombre
+			from usuario
+			where login = @i_login
+
+			return 0
+		end
+	end
+	if(@i_modo = 1)
+	begin
+		if not exists(select 1 from usuario where login = @i_login and contrasena = @i_contrasena)
 		begin
-			select  @o_exists = 0,
-			@w_error = 102, --Contraseña caducada
-			@w_return = 102
+			select  @w_error = 100, --Usuario no existe
+			@w_return = 100
 			goto errors
 		end
+		else
+		begin
+			/* Validar vigencia de contraseña */
+			if exists(select 1 from usuario where estado <> 'A')
+			begin
+				select  @w_error = 101, --El usuario no se encuentra activo
+				@w_return = 101
+				goto errors
+			end
+		
+			/* Si la contraseña tiene caducada más de 3 meses debe actualizar */
+			if exists(select * from usuario where fecha_modificacion is not null and datediff(month, GETDATE(),fecha_modificacion) > 3)
+			begin
+				select  @w_error = 102, --Contraseña caducada
+				@w_return = 102
+				goto errors
+			end
 
-		select	'NOMBRE'	= nombre,
-				'SEXO'		= sexo,
-				'PAIS'		= pais,
-				'CIUDAD'	= ciudad,
-				'ROL'		= rol,
-				'ESTADO'	= estado
-		from usuario
-		where login = @i_login
+			select	'NOMBRE'	= nombre,
+					'SEXO'		= sexo,
+					'PAIS'		= pais,
+					'CIUDAD'	= ciudad,
+					'ROL'		= rol,
+					'ESTADO'	= estado
+			from usuario
+			where login = @i_login
 
-		select @o_exists = 1
-		return 0
+			return 0
+		end
 	end
 end
 
@@ -161,7 +194,7 @@ errors:
 
 if @w_return <> 0 begin
     exec sp_fm_error
-    @s_date = @s_date,
+    @s_date = getDate,
     @i_num  = @w_error,
 	@i_sev  = @w_sev
 

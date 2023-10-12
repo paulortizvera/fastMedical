@@ -17,7 +17,7 @@ begin
 	print 'Creando usuario'
 		
 	insert into usuario(login, contrasena, nombre, sexo, pais, ciudad, direccion, telefono, correo, fecha_nacimiento, fecha_registro, fecha_modificacion, rol, estado)
-	values (@w_login, 'admin', 'Paul Ortiz', 'M', 'Ecuador', 'Quito', 'Quito', '0981691113', 'mauricio_14147@gmail.com', '09/14/1993', '10/08/2023', null, 'A', 'A')
+	values (@w_login, '$2a$10$5abczqaVaEpeAslzq6pc8uOBigbXPm9yjHIRLH6dMSejiUMGCkKue', 'Paul Ortiz', 'M', 'Ecuador', 'Quito', 'Quito', '0981691113', 'mauricio_14147@gmail.com', '09/14/1993', '10/08/2023', null, 'A', 'A')
 		
 	print 'Usuario registrado con éxito.'
 end

@@ -30,11 +30,8 @@ create proc sp_fm_adm_usuario
    @i_direccion   varchar(200) = null,
    @i_telefono    varchar(13) = null,
    @i_fecha_nacimiento    date = null,
-   @i_fecha_registro      date = null,
-   @i_fecha_modificacion  date = null,
    @i_rol         char(1) = null,
-   @i_estado      char(1) = null,
-   @i_otp		  varchar(50) = null)
+   @i_estado      char(1) = null)
 as
   declare @w_return  int,
           @w_error   int,
@@ -107,8 +104,7 @@ begin
 			ciudad             = @i_ciudad,
 			direccion          = @i_direccion,
 			telefono           = @i_telefono,
-			fecha_nacimiento   = @i_fecha_nacimiento,
-			fecha_registro     = @i_fecha_registro
+			fecha_nacimiento   = @i_fecha_nacimiento
 		where login = @i_login
 	end
 	/* Cambiar rol */

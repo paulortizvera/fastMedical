@@ -16,13 +16,13 @@ go
 /**************************************************************************/
 
 create proc sp_fm_cons_usuario
- ( @s_date        datetime,
+ ( @s_date        datetime, --Fecha
    @i_operacion   char(1),
    @i_modo        int = null,
    @i_login       varchar(50) = null,
    @i_contrasena  varchar(50) = null,
    @i_correo      varchar(50) = null,
-   @i_otp		  varchar(50) = null)
+   @i_otp		  int = null)
 as
   declare @w_return  int,
           @w_error   int,
@@ -48,7 +48,11 @@ begin
 			'DIRECCION'			= direccion,
 			'TELEFONO'			= telefono,
 			'CORREO'			= correo,
-			'FECHA_NACIMIENTO'	= fecha_nacimiento
+			'FECHA_NACIMIENTO'	= fecha_nacimiento,
+			'FECHA_REGISTRO'	= fecha_registro,
+			'FECHA_MODIFICACION'= fecha_modificacion,
+			'ROL'               = rol,
+			'ESTADO'            = estado
 		from usuario
 	end
 	/* Consultar solo activos */
@@ -62,14 +66,18 @@ begin
 			'DIRECCION'			= direccion,
 			'TELEFONO'			= telefono,
 			'CORREO'			= correo,
-			'FECHA_NACIMIENTO'	= fecha_nacimiento
+			'FECHA_NACIMIENTO'	= fecha_nacimiento,
+			'FECHA_REGISTRO'	= fecha_registro,
+			'FECHA_MODIFICACION'= fecha_modificacion,
+			'ROL'               = rol,
+			'ESTADO'            = estado
 		from usuario
 		where estado = 'A'
 	end
 
 end
 
-/* Search */
+/* Querys */
 if @i_operacion = 'Q' 
 begin
 	/* Consultar usuario por login*/
@@ -109,7 +117,7 @@ errors:
 
 if @w_return <> 0 begin
     exec sp_fm_error
-    @s_date = @s_date,
+    @s_date = getDate,
     @i_num  = 1,
     @i_msg  = @w_msg,
 	@i_sev  = 0

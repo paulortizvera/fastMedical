@@ -7,10 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dioblazer.fast.medical.model.User;
+import com.dioblazer.fast.medical.model.UserResponse;
 import com.dioblazer.fast.medical.service.IUserService;
 
 @RestController
@@ -20,35 +25,38 @@ public class UserController {
 	@Autowired
 	private IUserService iUserService;
 
-	@GetMapping("/list")
+	@GetMapping
 	public ResponseEntity<List<User>> list() {
 		var result = iUserService.findAll();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	@GetMapping("/listActives")
+	public ResponseEntity<List<User>> listActives() {
+		var result = iUserService.findActives();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/{login}")
+	public ResponseEntity<UserResponse> userByLogin(@PathVariable("login") String login) {
+		var result = iUserService.userByLogin(login);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/email/{email}")
+	public ResponseEntity<UserResponse> userByEmail(@PathVariable("email") String email) {
+		var result = iUserService.userByEmail(email);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 
-	/*
-	 * @Autowired private IUserRepository UserRepo;
-	 * 
-	 * @GetMapping public ResponseEntity<List<User>> getUser() { try { List<User>
-	 * usr = UserRepo.findAll(); if (usr == null) { return new
-	 * ResponseEntity<List<User>>(HttpStatus.BAD_REQUEST); } else { return new
-	 * ResponseEntity<List<User>>(usr, HttpStatus.OK); } } catch (Exception e) {
-	 * return new ResponseEntity<List<User>>(HttpStatus.BAD_REQUEST); } }
-	 * 
-	 * @GetMapping(value = "/{id}") public ResponseEntity<Optional<User>>
-	 * getUserById(@PathVariable("id") String id) { try { Optional<User> acc =
-	 * null;//UserRepo.findById(id); if (acc == null) { return new
-	 * ResponseEntity<Optional<User>>(HttpStatus.BAD_REQUEST); } else { return new
-	 * ResponseEntity<Optional<User>>(acc, HttpStatus.OK); } } catch (Exception e) {
-	 * return new ResponseEntity<Optional<User>>(HttpStatus.BAD_REQUEST); } }
-	 * 
-	 * @PostMapping public void insertUser(@RequestBody User acc) {
-	 * UserRepo.save(acc); }
-	 * 
-	 * @PutMapping public void updateUser(@RequestBody User acc) {
-	 * UserRepo.save(acc); }
-	 * 
-	 * @DeleteMapping(value = "/{id}") public void deleteUser(@PathVariable("id")
-	 * String id) { //UserRepo.deleteById(id); }
-	 */
+	@PostMapping("/add")
+	public void save(@RequestBody User user) {
+		iUserService.save(user);
+	}
+
+	@PutMapping(value = "/{login}")
+	public void updateByLogin(@RequestBody User user) {
+		iUserService.updateByLogin(user);
+	}
+	
 }

@@ -1,5 +1,6 @@
 package com.dioblazer.fast.medical.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.data.relational.core.mapping.Column;
@@ -11,14 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserResponse implements Serializable {
 
-	private static final long serialVersionUID = -3263711262516142627L;
+	private static final long serialVersionUID = -6589552909240760066L;
 
 	@Column(value = "login")
 	private String login;
-	@Column(value = "contrasena")
-	private String password;
 	@Column(value = "nombre")
 	private String name;
 	@Column(value = "sexo")
@@ -34,7 +33,7 @@ public class User {
 	@Column(value = "correo")
 	private String email;
 	@Column(value = "fecha_nacimiento")
-	private Date birthDate;
+	private Date bithDate;
 	@Column(value = "fecha_registro")
 	private Date registrationDate;
 	@Column(value = "fecha_modificacion")
