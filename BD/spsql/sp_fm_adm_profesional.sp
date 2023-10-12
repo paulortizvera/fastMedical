@@ -25,8 +25,9 @@ create proc sp_fm_adm_profesional
    @i_especialidad char(1) = null,
    @i_documentacion char(1) = null,
    @i_comentario  varchar(300) = null,
-   @i_rol         char(1) = null,
-   @i_estado      char(1) = null)
+   @i_estado      char(1) = null,
+   @o_rowcount    int = null out,
+   @o_msg         varchar(300) = null out)
 as
   declare @w_return  int,
           @w_error   int,
@@ -37,7 +38,8 @@ as
 		  @w_documentacion char(1)
 
 ----------------------------------------------------
-select @w_sp_name  = object_name( @@procid )
+select @w_sp_name  = object_name( @@procid ),
+@o_rowcount = 0
 
 /* Insertar */
 if @i_operacion = 'I' 
@@ -53,6 +55,8 @@ begin
 	
 	insert into profesional (tipo, especialidad, login)
 	values (@i_tipo, @i_especialidad, @i_login)
+
+	select @o_rowcount = 1
 end
 /* Actualizar */
 if @i_operacion = 'U' 
@@ -71,7 +75,7 @@ begin
 		select @w_tipo		 = tipo,
 			@w_especialidad  = especialidad,
 			@w_documentacion = documentacion
-		from especialidad
+		from profesional
 		where login = @i_login
 
 		/* Si cambia el tipo o la especialidad se debe validar documentación */
@@ -84,6 +88,8 @@ begin
 			documentacion       = @w_documentacion,
 			fecha_modificacion	= GETDATE()
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 	/* Cambiar documentacion */
 	if(@i_modo = 1)
@@ -101,6 +107,8 @@ begin
 			comentario			= @i_comentario,
 			fecha_modificacion	= GETDATE()
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 	/* Cambiar estado */
 	if(@i_modo = 2)
@@ -118,9 +126,34 @@ begin
 			comentario			= @i_comentario,
 			fecha_modificacion	= GETDATE()
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 end
 
+/* Eliminar */
+if @i_operacion = 'D' 
+begin
+	/* Validar Login*/
+	if not exists(select 1 from profesional where login = @i_login)
+	begin
+		select  @w_error = 303, --El profesional a eliminar no existe
+		@w_return = 303
+		goto errors
+	end
+	/* Validar solicitudes*/
+	if exists(select 1 from profesional p inner join solicitud s on p.codigo = s.codigo where p.login = @i_login and s.estado <> 'C')
+	begin
+		select  @w_error = 302, --El profesional a actualizar no existe
+		@w_return = 302
+		goto errors
+	end
+	
+	/* Se eliminan los correos */
+	delete profesional where login = @i_login
+
+	select @o_rowcount = 1
+end
 -- Manejo de errores
 errors:
 
@@ -128,7 +161,8 @@ if @w_return <> 0 begin
     exec sp_fm_error
     @s_date = @s_date,
     @i_num  = @w_error,
-	@i_sev  = @w_sev
+	@i_sev  = @w_sev,
+	@o_msg  = @o_msg out
 
     return @w_return
 end

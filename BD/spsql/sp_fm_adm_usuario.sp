@@ -16,8 +16,8 @@ go
 /**************************************************************************/
 
 create proc sp_fm_adm_usuario
- ( @s_date        datetime, --Fecha
-   @s_login       varchar(50), --usuario logeado
+ ( @s_date        datetime = null, --Fecha
+   @s_login       varchar(50) = null, --usuario logeado
    @i_operacion   char(1),
    @i_modo        int = null,
    @i_login       varchar(50) = null,
@@ -31,7 +31,9 @@ create proc sp_fm_adm_usuario
    @i_telefono    varchar(13) = null,
    @i_fecha_nacimiento    date = null,
    @i_rol         char(1) = null,
-   @i_estado      char(1) = null)
+   @i_estado      char(1) = null,
+   @o_rowcount    int = null out,
+   @o_msg         varchar(300) = null out)
 as
   declare @w_return  int,
           @w_error   int,
@@ -42,7 +44,8 @@ as
           @w_sp_name varchar ( 32 )
 
 ----------------------------------------------------
-select @w_sp_name  = object_name( @@procid )
+select @w_sp_name  = object_name( @@procid ),
+@o_rowcount = 0
 
 /* Insertar */
 if @i_operacion = 'I' 
@@ -66,6 +69,8 @@ begin
 
 	insert into usuario(login, nombre, sexo, pais, ciudad, direccion, telefono, correo, fecha_nacimiento, fecha_registro, rol, estado)
 	values (@i_login, @i_nombre, @i_sexo, @i_pais, @i_ciudad, @i_direccion, @i_telefono, @i_correo, @i_fecha_nacimiento, GETDATE(), 'C', 'P')
+
+	select @o_rowcount = 1
 
 	/* Crear otp para contraseña */
 	exec @w_return = sp_fm_login
@@ -106,6 +111,8 @@ begin
 			telefono           = @i_telefono,
 			fecha_nacimiento   = @i_fecha_nacimiento
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 	/* Cambiar rol */
 	if(@i_modo = 1)
@@ -117,10 +124,12 @@ begin
 			@w_return = 203
 			goto errors
 		end
-
+		
 		update usuario set
 			rol = @i_rol
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 	/* Cambiar estado */
 	if(@i_modo = 2)
@@ -136,7 +145,28 @@ begin
 		update usuario set
 			estado = @i_estado
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
+end
+
+/* Eliminar */
+if @i_operacion = 'D' 
+begin
+	/* Validar Login*/
+	if not exists(select 1 from usuario where login = @i_login)
+	begin
+		select  @w_error = 206, --El usuario a eliminar no existe
+		@w_return = 206
+		goto errors
+	end
+	
+	/* Se eliminan los correos */
+	delete correo_otp where login = @i_login
+	/* Se elimina usuario */
+	delete usuario where login = @i_login
+
+	select @o_rowcount = 1
 end
 
 -- Manejo de errores
@@ -147,7 +177,8 @@ if @w_return <> 0 begin
     @s_date = @s_date,
     @i_num  = @w_error,
     @i_msg  = @w_msg,
-	@i_sev  = @w_sev
+	@i_sev  = @w_sev,
+	@o_msg  = @o_msg out
 
     return @w_return
 end

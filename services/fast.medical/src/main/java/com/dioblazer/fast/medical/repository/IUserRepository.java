@@ -1,25 +1,29 @@
 package com.dioblazer.fast.medical.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.dioblazer.fast.medical.model.User;
 import com.dioblazer.fast.medical.model.UserResponse;
+import com.dioblazer.fast.medical.utils.BusinessException;
 
 public interface IUserRepository {
 	Optional<User> findOneByLogin(String login);
 
-	public List<User> findAll();
+	UserResponse findAll();
 
-	List<User> findActives();
+	UserResponse findActives();
 
 	UserResponse userByLogin(String login);
 
 	UserResponse userByEmail(String email);
 
-	public int save(User user);
+	int save(User user) throws BusinessException;
 
-	public int update(User user);
+	int updateByLogin(User user) throws BusinessException;
 
-	public int deleteById(User user);
+	int deleteByLogin(String login) throws BusinessException;
+
+	int updateRol(String loginAdm, User user) throws BusinessException;
+
+	int updateStatus(String loginAdm, User user) throws BusinessException;
 }

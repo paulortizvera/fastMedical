@@ -40,8 +40,10 @@ begin
 	begin
 		select	'CODIGO'          = codigo,
 			'TIPO'			      = tipo,
+			'ESPECIALIDAD'        = especialidad,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'DOCUMENTACION'       = documentacion,
+			'COMENTARIO'		  = comentario,
 			'ESTADO'              = estado,
 			'LOGIN'               = login
 		from profesional
@@ -51,8 +53,10 @@ begin
 	begin
 		select	'CODIGO'          = codigo,
 			'TIPO'			      = tipo,
+			'ESPECIALIDAD'        = especialidad,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'DOCUMENTACION'       = documentacion,
+			'COMENTARIO'		  = comentario,
 			'ESTADO'              = estado,
 			'LOGIN'               = login
 		from profesional

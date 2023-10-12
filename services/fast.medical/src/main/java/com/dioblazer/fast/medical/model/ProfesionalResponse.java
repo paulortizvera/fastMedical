@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class UserResponse extends ServiceResponse {
+public class ProfesionalResponse extends ServiceResponse {
 	private static final long serialVersionUID = -6589552909240760066L;
-	private List<User> user;
+	private List<Profesional> profesional;
 }

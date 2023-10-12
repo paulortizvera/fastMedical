@@ -2,7 +2,6 @@ package com.dioblazer.fast.medical.repository.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -20,6 +20,7 @@ import com.dioblazer.fast.medical.model.UserResponse;
 import com.dioblazer.fast.medical.repository.IUserRepository;
 import com.dioblazer.fast.medical.repository.param.GeneralParam;
 import com.dioblazer.fast.medical.repository.param.UserParam;
+import com.dioblazer.fast.medical.utils.BusinessException;
 import com.dioblazer.fast.medical.utils.Constants;
 
 @Repository
@@ -30,6 +31,93 @@ public class UserRepositoryImpl implements IUserRepository {
 
 	@Override
 	public Optional<User> findOneByLogin(String login) {
+		return execLogin(login);
+	}
+
+	@Override
+	public UserResponse findAll() {
+		UserResponse resp = new UserResponse();
+		resp.setUser(execQueryUser("S", "0", null, null));
+		if (resp.getUser() != null) {
+			resp.setSuccess(true);
+		} else {
+			resp = new UserResponse();
+			resp.setSuccess(false);
+			resp.setMessString("No se encontraron registros");
+		}
+		return resp;
+	}
+
+	@Override
+	public UserResponse findActives() {
+		UserResponse resp = new UserResponse();
+		resp.setUser(execQueryUser("S", "1", null, null));
+		if (resp.getUser() != null) {
+			resp.setSuccess(true);
+		} else {
+			resp = new UserResponse();
+			resp.setSuccess(false);
+			resp.setMessString("No se encontraron registros");
+		}
+		return resp;
+	}
+
+	@Override
+	public UserResponse userByLogin(String login) {
+		UserResponse resp = new UserResponse();
+		resp.setUser(execQueryUser("Q", "0", login, null));
+		if (resp.getUser() != null) {
+			resp.setSuccess(true);
+		} else {
+			resp = new UserResponse();
+			resp.setSuccess(false);
+			resp.setMessString("No se encontraron registros");
+		}
+		return resp;
+	}
+
+	@Override
+	public UserResponse userByEmail(String email) {
+		UserResponse resp = new UserResponse();
+		resp.setUser(execQueryUser("Q", "1", null, email));
+		if (resp.getUser() != null) {
+			resp.setSuccess(true);
+		} else {
+			resp = new UserResponse();
+			resp.setSuccess(false);
+			resp.setMessString("No se encontraron registros");
+		}
+		return resp;
+	}
+
+	@Override
+	public int save(User user) throws BusinessException {
+		return execAdmUser("I", null, user, null);
+	}
+
+	@Override
+	public int updateByLogin(User user) throws BusinessException {
+		return execAdmUser("U", "0", user, null);
+	}
+
+	@Override
+	public int deleteByLogin(String login) throws BusinessException {
+		User user = new User();
+		user.setLogin(login);
+		return execAdmUser("D", null, user, null);
+	}
+
+	@Override
+	public int updateRol(String loginAdm, User user) throws BusinessException {
+		return execAdmUser("U", "1", user, loginAdm);
+	}
+
+	@Override
+	public int updateStatus(String loginAdm, User user) throws BusinessException {
+		return execAdmUser("U", "2", user, loginAdm);
+	}
+
+	private Optional<User> execLogin(String login) {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName(Constants.SP_LOGIN.getName())
 				.declareParameters(new SqlParameter[] {
 						new SqlParameter(GeneralParam.S_DATE.getName(), GeneralParam.S_DATE.getType()),
@@ -69,43 +157,6 @@ public class UserRepositoryImpl implements IUserRepository {
 		return Optional.of(userList.get(0));
 	}
 
-	@Override
-	public List<User> findAll() {
-		return execQueryUser("S", "0", null, null);
-	}
-
-	@Override
-	public List<User> findActives() {
-		return execQueryUser("S", "1", null, null);
-	}
-
-	@Override
-	public UserResponse userByLogin(String login) {
-		return execQueryUser("Q", "0", login, null);
-	}
-
-	@Override
-	public UserResponse userByEmail(String email) {
-		return execQueryUser("Q", "1", null, email);
-	}
-
-	@Override
-	public int save(User user) {
-		return execAdmUser("I", null, user);
-	}
-
-	@Override
-	public int update(User user) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int deleteById(User user) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	private <T> T execQueryUser(String operation, String mode, String login, String email) {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
 				.withProcedureName(Constants.SP_CONS_USER.getName())
@@ -117,11 +168,11 @@ public class UserRepositoryImpl implements IUserRepository {
 						new SqlParameter(GeneralParam.EMAIL.getName(), GeneralParam.EMAIL.getType()),
 						new SqlParameter(UserParam.PASSWORD.getName(), UserParam.PASSWORD.getType()),
 						new SqlParameter(UserParam.OTP.getName(), UserParam.OTP.getType()) })
-				.returningResultSet("result", new RowMapper<UserResponse>() {
+				.returningResultSet("result", new RowMapper<User>() {
 
 					@Override
-					public UserResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
-						UserResponse user = new UserResponse();
+					public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+						User user = new User();
 						user.setLogin(rs.getString("LOGIN"));
 						user.setName(rs.getString("NOMBRE"));
 						user.setGender(rs.getString("SEXO"));
@@ -130,7 +181,7 @@ public class UserRepositoryImpl implements IUserRepository {
 						user.setAddress(rs.getString("DIRECCION"));
 						user.setPhone(rs.getString("TELEFONO"));
 						user.setEmail(rs.getString("CORREO"));
-						user.setBithDate(rs.getDate("FECHA_NACIMIENTO"));
+						user.setBirthDate(rs.getDate("FECHA_NACIMIENTO"));
 						if (login == null && email == null) {
 							user.setRegistrationDate(rs.getDate("FECHA_REGISTRO"));
 							user.setModificiationDate(rs.getDate("FECHA_MODIFICACION"));
@@ -154,15 +205,11 @@ public class UserRepositoryImpl implements IUserRepository {
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
 		List<User> usersList = (List<User>) results.get("result");
-		if (login == null && email == null) {
-			return (T) usersList;
-		} else {
-			return (T) usersList.get(0);
-		}
-	}
-	
 
-	private int execAdmUser(String operation, String mode, User user) {
+		return usersList != null && !usersList.isEmpty() ? (T) usersList : null;
+	}
+
+	private int execAdmUser(String operation, String mode, User user, String loginAdm) throws BusinessException {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
 				.withProcedureName(Constants.SP_ADM_USER.getName())
 				.declareParameters(new SqlParameter[] {
@@ -182,34 +229,11 @@ public class UserRepositoryImpl implements IUserRepository {
 						new SqlParameter(UserParam.BIRTHDATE.getName(), UserParam.BIRTHDATE.getType()),
 						new SqlParameter(GeneralParam.ROL.getName(), GeneralParam.ROL.getType()),
 						new SqlParameter(GeneralParam.STATUS.getName(), GeneralParam.STATUS.getType()),
-						new SqlParameter("@o_rowcount", Types.INTEGER)  })
-				.returningResultSet("result", new RowMapper<UserResponse>() {
-
-					@Override
-					public UserResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
-						UserResponse user = new UserResponse();
-						user.setLogin(rs.getString("LOGIN"));
-						/*user.setName(rs.getString("NOMBRE"));
-						user.setGender(rs.getString("SEXO"));
-						user.setCountry(rs.getString("PAIS"));
-						user.setCity(rs.getString("CIUDAD"));
-						user.setAddress(rs.getString("DIRECCION"));
-						user.setPhone(rs.getString("TELEFONO"));
-						user.setEmail(rs.getString("CORREO"));
-						user.setBithDate(rs.getDate("FECHA_NACIMIENTO"));
-						if (login == null && email == null) {
-							user.setRegistrationDate(rs.getDate("FECHA_REGISTRO"));
-							user.setModificiationDate(rs.getDate("FECHA_MODIFICACION"));
-							user.setRol(rs.getString("ROL"));
-							user.setStatus(rs.getString("ESTADO"));
-						}*/
-						return user;
-					}
-
-				});
+						new SqlOutParameter(GeneralParam.ROWCOUNT.getName(), GeneralParam.ROWCOUNT.getType()),
+						new SqlOutParameter(GeneralParam.ERROR_MSG.getName(), GeneralParam.ERROR_MSG.getType()) });
 
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue(GeneralParam.S_LOGIN.getName(), "");
+		mapSqlParameterSource.addValue(GeneralParam.S_LOGIN.getName(), loginAdm);
 		mapSqlParameterSource.addValue(GeneralParam.S_DATE.getName(), "");
 		mapSqlParameterSource.addValue(GeneralParam.OPERATION.getName(), operation);
 		mapSqlParameterSource.addValue(GeneralParam.MODE.getName(), mode);
@@ -225,12 +249,14 @@ public class UserRepositoryImpl implements IUserRepository {
 		mapSqlParameterSource.addValue(UserParam.BIRTHDATE.getName(), user.getBirthDate());
 		mapSqlParameterSource.addValue(GeneralParam.ROL.getName(), user.getRol());
 		mapSqlParameterSource.addValue(GeneralParam.STATUS.getName(), user.getStatus());
-		mapSqlParameterSource.addValue("@o_rowcount", "1");
-		
+
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
-		int result = 900;
-		if(results.get("@o_rowcount") != null) {
-			result = (int) results.get("@o_rowcount");
+		int result = 0;
+		if (results.get(GeneralParam.ERROR_MSG.getName()) != null) {
+			throw new BusinessException((String) results.get(GeneralParam.ERROR_MSG.getName()));
+		}
+		if (results.get(GeneralParam.ROWCOUNT.getName()) != null) {
+			result = (int) results.get(GeneralParam.ROWCOUNT.getName());
 		}
 		return result;
 	}

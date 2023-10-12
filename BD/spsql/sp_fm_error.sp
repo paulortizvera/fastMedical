@@ -18,8 +18,9 @@ go
 create proc sp_fm_error
  ( @s_date        datetime,
    @i_num         int,
-   @i_msg         varchar(200),
-   @i_sev         int)
+   @i_msg         varchar(200) = null,
+   @i_sev         int,
+   @o_msg         varchar(200) = null out)
 as
   declare @w_error   varchar(250),
           @w_sp_name varchar ( 32 )
@@ -43,10 +44,10 @@ begin
 
 end
 
-select @w_error = convert(varchar,@i_num) + ' ' + @i_msg
+select @w_error = convert(varchar,@i_num) + ' - ' + @i_msg
 
+select @o_msg = @w_error
 /* Desplegar mensaje de error con número */
-raiserror (@w_error, -1, -1);
 
 /* Si la severidad es 1 ejecuta un rollback */
 if(@i_sev = 1)

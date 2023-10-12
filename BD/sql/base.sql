@@ -10,7 +10,7 @@ go
 
 create table usuario(
 	login varchar(50) primary key,
-	contrasena varchar(50) not null,
+	contrasena varchar(1000) null,
 	nombre varchar(100) not null,
 	sexo char(1) not null DEFAULT 'M',
 	pais varchar(50) not null,

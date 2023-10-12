@@ -9,6 +9,7 @@ import com.dioblazer.fast.medical.model.User;
 import com.dioblazer.fast.medical.model.UserResponse;
 import com.dioblazer.fast.medical.repository.IUserRepository;
 import com.dioblazer.fast.medical.service.IUserService;
+import com.dioblazer.fast.medical.utils.BusinessException;
 
 @Service
 public class UserService implements IUserService {
@@ -17,8 +18,8 @@ public class UserService implements IUserService {
 	private IUserRepository iUserRepository;
 
 	@Override
-	public List<User> findAll() {
-		List<User> userList;
+	public UserResponse findAll() {
+		UserResponse userList;
 		try {
 			userList = iUserRepository.findAll();
 		} catch (Exception e) {
@@ -28,8 +29,8 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public List<User> findActives() {
-		List<User> userList;
+	public UserResponse findActives() {
+		UserResponse userList;
 		try {
 			userList = iUserRepository.findActives();
 		} catch (Exception e) {
@@ -61,20 +62,27 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
-	public int save(User user) {
+	public int save(User user) throws BusinessException {
 		return iUserRepository.save(user);
 	}
 
 	@Override
-	public int updateByLogin(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateByLogin(User user) throws BusinessException {
+		return iUserRepository.updateByLogin(user);
 	}
 
 	@Override
-	public int deleteById(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteByLogin(String login) throws BusinessException {
+		return iUserRepository.deleteByLogin(login);
 	}
 
+	@Override
+	public int updateRol(String loginAdm, User user) throws BusinessException {
+		return iUserRepository.updateRol(loginAdm, user);
+	}
+
+	@Override
+	public int updateStatus(String loginAdm, User user) throws BusinessException {
+		return iUserRepository.updateStatus(loginAdm, user);
+	}
 }
