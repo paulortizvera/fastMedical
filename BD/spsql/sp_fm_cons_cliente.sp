@@ -72,8 +72,7 @@ begin
 			'DOCUMENTACION'       = documentacion,
 			'COMENTARIO'          = comentario,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
-			'ESTADO'              = estado,
-			'LOGIN'               = login
+			'ESTADO'              = estado
 		from cliente
 		where login = @i_login
 	end

@@ -24,8 +24,9 @@ create proc sp_fm_adm_cliente
    @i_enfermedad  char(1) = null,
    @i_documentacion char(1) = null,
    @i_comentario  varchar(300) = null,
-   @i_rol         char(1) = null,
-   @i_estado      char(1) = null)
+   @i_estado      char(1) = null,
+   @o_rowcount    int = null out,
+   @o_msg         varchar(300) = null out)
 as
   declare @w_return  int,
           @w_error   int,
@@ -36,7 +37,8 @@ as
 		  @w_documentacion char(1)
 
 ----------------------------------------------------
-select @w_sp_name  = object_name( @@procid )
+select @w_sp_name  = object_name( @@procid ),
+@o_rowcount = 1
 
 /* Insertar */
 if @i_operacion = 'I' 
@@ -52,6 +54,8 @@ begin
 	
 	insert into cliente (enfermedad, login)
 	values (@i_enfermedad, @i_login)
+
+	select @o_rowcount = 1
 end
 /* Actualizar */
 if @i_operacion = 'U' 
@@ -71,6 +75,8 @@ begin
 			enfermedad			= @i_enfermedad,
 			fecha_modificacion	= GETDATE()
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 	/* Cambiar documentacion */
 	if(@i_modo = 1)
@@ -88,6 +94,8 @@ begin
 			comentario			= @i_comentario,
 			fecha_modificacion	= GETDATE()
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 	/* Cambiar estado */
 	if(@i_modo = 2)
@@ -105,6 +113,8 @@ begin
 			comentario			= @i_comentario,
 			fecha_modificacion	= GETDATE()
 		where login = @i_login
+
+		select @o_rowcount = 1
 	end
 end
 
@@ -115,7 +125,8 @@ if @w_return <> 0 begin
     exec sp_fm_error
     @s_date = @s_date,
     @i_num  = @w_error,
-	@i_sev  = @w_sev
+	@i_sev  = @w_sev,
+	@o_msg  = @o_msg out
 
     return @w_return
 end

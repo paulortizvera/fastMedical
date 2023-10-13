@@ -14,48 +14,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dioblazer.fast.medical.model.ServiceResponse;
-import com.dioblazer.fast.medical.model.Profesional;
-import com.dioblazer.fast.medical.model.ProfesionalResponse;
-import com.dioblazer.fast.medical.service.IProfesionalService;
+import com.dioblazer.fast.medical.model.Client;
+import com.dioblazer.fast.medical.model.ClientResponse;
+import com.dioblazer.fast.medical.service.IClientService;
 import com.dioblazer.fast.medical.utils.BusinessException;
 
 @RestController
-@RequestMapping("api/v1/profesional")
+@RequestMapping("api/v1/client")
 @CrossOrigin("*")
-public class ProfesionalController {
+public class ClientController {
 	@Autowired
-	private IProfesionalService iProfesionalService;
+	private IClientService iClientService;
 
 	@GetMapping
-	public ResponseEntity<ProfesionalResponse> list() {
-		ProfesionalResponse result = iProfesionalService.findAll();
+	public ResponseEntity<ClientResponse> list() {
+		ClientResponse result = iClientService.findAll();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@GetMapping("/listActives")
-	public ResponseEntity<ProfesionalResponse> listActives() {
-		ProfesionalResponse result = iProfesionalService.findActives();
+	public ResponseEntity<ClientResponse> listActives() {
+		ClientResponse result = iClientService.findActives();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{login}")
-	public ResponseEntity<ProfesionalResponse> ProfesionalByLogin(@PathVariable("login") String login) {
-		ProfesionalResponse result = iProfesionalService.ProfesionalByLogin(login);
+	public ResponseEntity<ClientResponse> ClientByLogin(@PathVariable("login") String login) {
+		ClientResponse result = iClientService.clientByLogin(login);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/email/{email}")
-	public ResponseEntity<ServiceResponse> ProfesionalByEmail(@PathVariable("email") String email) {
-		ProfesionalResponse result = iProfesionalService.ProfesionalByEmail(email);
+	public ResponseEntity<ServiceResponse> ClientByEmail(@PathVariable("email") String email) {
+		ClientResponse result = iClientService.clientByEmail(email);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<ServiceResponse> save(@RequestBody Profesional profesional) {
+	public ResponseEntity<ServiceResponse> save(@RequestBody Client client) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.save(profesional);
+			iClientService.save(client);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -65,11 +65,11 @@ public class ProfesionalController {
 	}
 
 	@PutMapping
-	public ResponseEntity<ServiceResponse> updateByLogin(@RequestBody Profesional profesional) {
+	public ResponseEntity<ServiceResponse> updateByLogin(@RequestBody Client client) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.updateByLogin(profesional);
+			iClientService.updateByLogin(client);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -83,7 +83,7 @@ public class ProfesionalController {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.deleteByLogin(login);
+			iClientService.deleteByLogin(login);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -93,11 +93,11 @@ public class ProfesionalController {
 	}
 
 	@PutMapping(value = "/documentation/{loginAdm}")
-	public ResponseEntity<ServiceResponse> updateDocumentation(@PathVariable("loginAdm") String loginAdm, @RequestBody Profesional profesional) {
+	public ResponseEntity<ServiceResponse> updateDocumentation(@PathVariable("loginAdm") String loginAdm, @RequestBody Client client) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.updateDocumentation(loginAdm, profesional);
+			iClientService.updateDocumentation(loginAdm, client);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -107,11 +107,11 @@ public class ProfesionalController {
 	}
 
 	@PutMapping(value = "/status/{loginAdm}")
-	public ResponseEntity<ServiceResponse> updateStatus(@PathVariable("loginAdm") String loginAdm, @RequestBody Profesional profesional) {
+	public ResponseEntity<ServiceResponse> updateStatus(@PathVariable("loginAdm") String loginAdm, @RequestBody Client client) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.updateStatus(loginAdm, profesional);
+			iClientService.updateStatus(loginAdm, client);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());

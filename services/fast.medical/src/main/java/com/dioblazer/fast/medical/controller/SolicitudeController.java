@@ -14,48 +14,66 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dioblazer.fast.medical.model.ServiceResponse;
-import com.dioblazer.fast.medical.model.Profesional;
-import com.dioblazer.fast.medical.model.ProfesionalResponse;
-import com.dioblazer.fast.medical.service.IProfesionalService;
+import com.dioblazer.fast.medical.model.Solicitude;
+import com.dioblazer.fast.medical.model.SolicitudeResponse;
+import com.dioblazer.fast.medical.service.ISolicitudeService;
 import com.dioblazer.fast.medical.utils.BusinessException;
 
 @RestController
-@RequestMapping("api/v1/profesional")
+@RequestMapping("api/v1/solicitude")
 @CrossOrigin("*")
-public class ProfesionalController {
+public class SolicitudeController {
 	@Autowired
-	private IProfesionalService iProfesionalService;
+	private ISolicitudeService iSolicitudeService;
 
 	@GetMapping
-	public ResponseEntity<ProfesionalResponse> list() {
-		ProfesionalResponse result = iProfesionalService.findAll();
+	public ResponseEntity<SolicitudeResponse> list() {
+		SolicitudeResponse result = iSolicitudeService.findAll();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping("/listActives")
-	public ResponseEntity<ProfesionalResponse> listActives() {
-		ProfesionalResponse result = iProfesionalService.findActives();
+	@GetMapping("/listComplete")
+	public ResponseEntity<SolicitudeResponse> listComplete() {
+		SolicitudeResponse result = iSolicitudeService.findComplete();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{login}")
-	public ResponseEntity<ProfesionalResponse> ProfesionalByLogin(@PathVariable("login") String login) {
-		ProfesionalResponse result = iProfesionalService.ProfesionalByLogin(login);
+	@GetMapping(value = "/{number}")
+	public ResponseEntity<SolicitudeResponse> solicitudeByLogin(@PathVariable("number") Integer number) {
+		SolicitudeResponse result = iSolicitudeService.solicitudeByNumber(number);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/email/{email}")
-	public ResponseEntity<ServiceResponse> ProfesionalByEmail(@PathVariable("email") String email) {
-		ProfesionalResponse result = iProfesionalService.ProfesionalByEmail(email);
+	@GetMapping(value = "/client/{client}")
+	public ResponseEntity<ServiceResponse> solicitudeByClient(@PathVariable("client") Integer client) {
+		SolicitudeResponse result = iSolicitudeService.solicitudeByClient(client);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/client/login/{loginCli}")
+	public ResponseEntity<ServiceResponse> solicitudeByClientLogin(@PathVariable("loginCli") String loginCli) {
+		SolicitudeResponse result = iSolicitudeService.solicitudeByClientLogin(loginCli);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/profesional/{profesional}")
+	public ResponseEntity<ServiceResponse> solicitudeByProfesional(@PathVariable("profesional") Integer client) {
+		SolicitudeResponse result = iSolicitudeService.solicitudeByProfesional(client);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/profesional/login/{loginCli}")
+	public ResponseEntity<ServiceResponse> solicitudeByProfesionalLogin(@PathVariable("loginCli") String loginCli) {
+		SolicitudeResponse result = iSolicitudeService.solicitudeByProfesionalLogin(loginCli);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<ServiceResponse> save(@RequestBody Profesional profesional) {
+	public ResponseEntity<ServiceResponse> save(@RequestBody Solicitude solicitude) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.save(profesional);
+			iSolicitudeService.save(solicitude);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -65,11 +83,11 @@ public class ProfesionalController {
 	}
 
 	@PutMapping
-	public ResponseEntity<ServiceResponse> updateByLogin(@RequestBody Profesional profesional) {
+	public ResponseEntity<ServiceResponse> updateByNumber(@RequestBody Solicitude solicitude) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.updateByLogin(profesional);
+			iSolicitudeService.updateByNumber(solicitude);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -78,12 +96,12 @@ public class ProfesionalController {
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "/{login}")
-	public ResponseEntity<ServiceResponse> deleteByLogin(@PathVariable("login") String login) {
+	@DeleteMapping(value = "/{number}")
+	public ResponseEntity<ServiceResponse> deleteByLogin(@PathVariable("number") Integer number) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.deleteByLogin(login);
+			iSolicitudeService.deleteByNumber(number);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -92,12 +110,12 @@ public class ProfesionalController {
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/documentation/{loginAdm}")
-	public ResponseEntity<ServiceResponse> updateDocumentation(@PathVariable("loginAdm") String loginAdm, @RequestBody Profesional profesional) {
+	@PutMapping(value = "/acept")
+	public ResponseEntity<ServiceResponse> aceptSolicitude(@RequestBody Solicitude solicitude) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.updateDocumentation(loginAdm, profesional);
+			iSolicitudeService.aceptSolicitude(solicitude);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());
@@ -106,12 +124,12 @@ public class ProfesionalController {
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/status/{loginAdm}")
-	public ResponseEntity<ServiceResponse> updateStatus(@PathVariable("loginAdm") String loginAdm, @RequestBody Profesional profesional) {
+	@PutMapping(value = "/status")
+	public ResponseEntity<ServiceResponse> updateStatus(@RequestBody Solicitude solicitude) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
-			iProfesionalService.updateStatus(loginAdm, profesional);
+			iSolicitudeService.updateStatus(solicitude);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
 			resp.setMessString(e.getMessage());

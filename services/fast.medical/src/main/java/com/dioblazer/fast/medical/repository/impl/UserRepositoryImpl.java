@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements IUserRepository {
 		} else {
 			resp = new UserResponse();
 			resp.setSuccess(false);
-			resp.setMessString("No se encontraron registros");
+			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
 		return resp;
 	}
@@ -57,7 +57,7 @@ public class UserRepositoryImpl implements IUserRepository {
 		} else {
 			resp = new UserResponse();
 			resp.setSuccess(false);
-			resp.setMessString("No se encontraron registros");
+			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
 		return resp;
 	}
@@ -71,7 +71,7 @@ public class UserRepositoryImpl implements IUserRepository {
 		} else {
 			resp = new UserResponse();
 			resp.setSuccess(false);
-			resp.setMessString("No se encontraron registros");
+			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
 		return resp;
 	}
@@ -85,7 +85,7 @@ public class UserRepositoryImpl implements IUserRepository {
 		} else {
 			resp = new UserResponse();
 			resp.setSuccess(false);
-			resp.setMessString("No se encontraron registros");
+			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
 		return resp;
 	}
@@ -127,7 +127,8 @@ public class UserRepositoryImpl implements IUserRepository {
 						new SqlParameter(UserParam.PASSWORD.getName(), UserParam.PASSWORD.getType()),
 						new SqlParameter(GeneralParam.EMAIL.getName(), GeneralParam.EMAIL.getType()),
 						new SqlParameter(UserParam.OTP.getName(), UserParam.OTP.getType()),
-						new SqlParameter(UserParam.OTP_TYPE.getName(), UserParam.OTP_TYPE.getType()) })
+						new SqlParameter(UserParam.OTP_TYPE.getName(), UserParam.OTP_TYPE.getType()),
+						new SqlOutParameter(GeneralParam.ERROR_MSG.getName(), GeneralParam.ERROR_MSG.getType()) })
 				.returningResultSet("result", new RowMapper<User>() {
 
 					@Override
@@ -154,6 +155,7 @@ public class UserRepositoryImpl implements IUserRepository {
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
 
 		List<User> userList = (List<User>) results.get("result");
+
 		return Optional.of(userList.get(0));
 	}
 
@@ -227,7 +229,7 @@ public class UserRepositoryImpl implements IUserRepository {
 						new SqlParameter(UserParam.ADDRESS.getName(), UserParam.ADDRESS.getType()),
 						new SqlParameter(UserParam.PHONE.getName(), UserParam.PHONE.getType()),
 						new SqlParameter(UserParam.BIRTHDATE.getName(), UserParam.BIRTHDATE.getType()),
-						new SqlParameter(GeneralParam.ROL.getName(), GeneralParam.ROL.getType()),
+						new SqlParameter(UserParam.ROL.getName(), UserParam.ROL.getType()),
 						new SqlParameter(GeneralParam.STATUS.getName(), GeneralParam.STATUS.getType()),
 						new SqlOutParameter(GeneralParam.ROWCOUNT.getName(), GeneralParam.ROWCOUNT.getType()),
 						new SqlOutParameter(GeneralParam.ERROR_MSG.getName(), GeneralParam.ERROR_MSG.getType()) });
@@ -247,7 +249,7 @@ public class UserRepositoryImpl implements IUserRepository {
 		mapSqlParameterSource.addValue(UserParam.ADDRESS.getName(), user.getAddress());
 		mapSqlParameterSource.addValue(UserParam.PHONE.getName(), user.getPhone());
 		mapSqlParameterSource.addValue(UserParam.BIRTHDATE.getName(), user.getBirthDate());
-		mapSqlParameterSource.addValue(GeneralParam.ROL.getName(), user.getRol());
+		mapSqlParameterSource.addValue(UserParam.ROL.getName(), user.getRol());
 		mapSqlParameterSource.addValue(GeneralParam.STATUS.getName(), user.getStatus());
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);

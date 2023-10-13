@@ -14,28 +14,28 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
-import com.dioblazer.fast.medical.model.Profesional;
-import com.dioblazer.fast.medical.model.ProfesionalResponse;
-import com.dioblazer.fast.medical.repository.IProfesionalRepository;
+import com.dioblazer.fast.medical.model.Client;
+import com.dioblazer.fast.medical.model.ClientResponse;
+import com.dioblazer.fast.medical.repository.IClientRepository;
 import com.dioblazer.fast.medical.repository.param.GeneralParam;
-import com.dioblazer.fast.medical.repository.param.ProfesionalParam;
+import com.dioblazer.fast.medical.repository.param.ClientParam;
 import com.dioblazer.fast.medical.utils.BusinessException;
 import com.dioblazer.fast.medical.utils.Constants;
 
 @Repository
-public class ProfesionalRepositoryImpl implements IProfesionalRepository {
+public class ClientRepositoryImpl implements IClientRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public ProfesionalResponse findAll() {
-		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("S", "0", null, null));
-		if (resp.getProfesional() != null) {
+	public ClientResponse findAll() {
+		ClientResponse resp = new ClientResponse();
+		resp.setClient(execQueryClient("S", "0", null, null));
+		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
-			resp = new ProfesionalResponse();
+			resp = new ClientResponse();
 			resp.setSuccess(false);
 			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
@@ -43,13 +43,13 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	}
 
 	@Override
-	public ProfesionalResponse findActives() {
-		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("S", "1", null, null));
-		if (resp.getProfesional() != null) {
+	public ClientResponse findActives() {
+		ClientResponse resp = new ClientResponse();
+		resp.setClient(execQueryClient("S", "1", null, null));
+		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
-			resp = new ProfesionalResponse();
+			resp = new ClientResponse();
 			resp.setSuccess(false);
 			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
@@ -57,13 +57,13 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	}
 
 	@Override
-	public ProfesionalResponse profesionalByLogin(String login) {
-		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("Q", "0", login, null));
-		if (resp.getProfesional() != null) {
+	public ClientResponse clientByLogin(String login) {
+		ClientResponse resp = new ClientResponse();
+		resp.setClient(execQueryClient("Q", "0", login, null));
+		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
-			resp = new ProfesionalResponse();
+			resp = new ClientResponse();
 			resp.setSuccess(false);
 			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
@@ -71,13 +71,13 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	}
 
 	@Override
-	public ProfesionalResponse profesionalByEmail(String email) {
-		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("Q", "1", null, email));
-		if (resp.getProfesional() != null) {
+	public ClientResponse clientByEmail(String email) {
+		ClientResponse resp = new ClientResponse();
+		resp.setClient(execQueryClient("Q", "1", null, email));
+		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
-			resp = new ProfesionalResponse();
+			resp = new ClientResponse();
 			resp.setSuccess(false);
 			resp.setMessString(Constants.NO_REGISTERS.getName());
 		}
@@ -85,57 +85,56 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	}
 
 	@Override
-	public int save(Profesional profesional) throws BusinessException {
-		return execAdmProfesional("I", null, profesional, null);
+	public int save(Client client) throws BusinessException {
+		return execAdmClient("I", null, client, null);
 	}
 
 	@Override
-	public int updateByLogin(Profesional profesional) throws BusinessException {
-		return execAdmProfesional("U", "0", profesional, null);
+	public int updateByLogin(Client client) throws BusinessException {
+		return execAdmClient("U", "0", client, null);
 	}
 
 	@Override
 	public int deleteByLogin(String login) throws BusinessException {
-		Profesional profesional = new Profesional();
-		profesional.setLogin(login);
-		return execAdmProfesional("D", null, profesional, null);
+		Client client = new Client();
+		client.setLogin(login);
+		return execAdmClient("D", null, client, null);
 	}
 
 	@Override
-	public int updateDocumentation(String loginAdm, Profesional profesional) throws BusinessException {
-		return execAdmProfesional("U", "1", profesional, loginAdm);
+	public int updateDocumentation(String loginAdm, Client client) throws BusinessException {
+		return execAdmClient("U", "1", client, loginAdm);
 	}
 
 	@Override
-	public int updateStatus(String loginAdm, Profesional profesional) throws BusinessException {
-		return execAdmProfesional("U", "2", profesional, loginAdm);
+	public int updateStatus(String loginAdm, Client client) throws BusinessException {
+		return execAdmClient("U", "2", client, loginAdm);
 	}
 
-	private <T> T execQueryProfesional(String operation, String mode, String login, String email) {
+	private <T> T execQueryClient(String operation, String mode, String login, String email) {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
-				.withProcedureName(Constants.SP_CONS_PROFESIONAL.getName())
+				.withProcedureName(Constants.SP_CONS_CLIENT.getName())
 				.declareParameters(new SqlParameter[] {
 						new SqlParameter(GeneralParam.S_DATE.getName(), GeneralParam.S_DATE.getType()),
 						new SqlParameter(GeneralParam.OPERATION.getName(), GeneralParam.OPERATION.getType()),
 						new SqlParameter(GeneralParam.MODE.getName(), GeneralParam.MODE.getType()),
 						new SqlParameter(GeneralParam.LOGIN.getName(), GeneralParam.LOGIN.getType()),
 						new SqlParameter(GeneralParam.EMAIL.getName(), GeneralParam.EMAIL.getType()) })
-				.returningResultSet("result", new RowMapper<Profesional>() {
+				.returningResultSet("result", new RowMapper<Client>() {
 
 					@Override
-					public Profesional mapRow(ResultSet rs, int rowNum) throws SQLException {
-						Profesional profesional = new Profesional();
-						profesional.setCode(rs.getInt("CODIGO"));
-						profesional.setType(rs.getString("TIPO"));
-						profesional.setSpecialty(rs.getString("ESPECIALIDAD"));
-						profesional.setModificationDate(rs.getDate("FECHA_MODIFICACION"));
-						profesional.setDocumentation(rs.getString("DOCUMENTACION"));
-						profesional.setComentary(rs.getString("COMENTARIO"));
-						profesional.setStatus(rs.getString("ESTADO"));
+					public Client mapRow(ResultSet rs, int rowNum) throws SQLException {
+						Client client = new Client();
+						client.setId(rs.getInt("ID"));
+						client.setDisease(rs.getString("ENFERMEDAD"));
+						client.setDocumentation(rs.getString("DOCUMENTACION"));
+						client.setComentary(rs.getString("COMENTARIO"));
+						client.setModificationDate(rs.getDate("FECHA_MODIFICACION"));
+						client.setStatus(rs.getString("ESTADO"));
 						if (login == null) {
-							profesional.setLogin(rs.getString("LOGIN"));
+							client.setLogin(rs.getString("LOGIN"));
 						}
-						return profesional;
+						return client;
 					}
 
 				});
@@ -149,23 +148,22 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 		mapSqlParameterSource.addValue(GeneralParam.EMAIL.getName(), email);
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
-		List<Profesional> profesional = (List<Profesional>) results.get("result");
+		List<Client> client = (List<Client>) results.get("result");
 
-		return profesional != null && !profesional.isEmpty() ? (T) profesional : null;
+		return client != null && !client.isEmpty() ? (T) client : null;
 	}
 
-	private int execAdmProfesional(String operation, String mode, Profesional profesional, String loginAdm)
+	private int execAdmClient(String operation, String mode, Client client, String loginAdm)
 			throws BusinessException {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
-				.withProcedureName(Constants.SP_ADM_PROFESIONAL.getName())
+				.withProcedureName(Constants.SP_ADM_CLIENT.getName())
 				.declareParameters(new SqlParameter[] {
 						new SqlParameter(GeneralParam.S_LOGIN.getName(), GeneralParam.S_LOGIN.getType()),
 						new SqlParameter(GeneralParam.S_DATE.getName(), GeneralParam.S_DATE.getType()),
 						new SqlParameter(GeneralParam.OPERATION.getName(), GeneralParam.OPERATION.getType()),
 						new SqlParameter(GeneralParam.MODE.getName(), GeneralParam.MODE.getType()),
 						new SqlParameter(GeneralParam.LOGIN.getName(), GeneralParam.LOGIN.getType()),
-						new SqlParameter(GeneralParam.TYPE.getName(), GeneralParam.TYPE.getType()),
-						new SqlParameter(ProfesionalParam.SPECIALITY.getName(), ProfesionalParam.SPECIALITY.getType()),
+						new SqlParameter(ClientParam.DISEASE.getName(), ClientParam.DISEASE.getType()),
 						new SqlParameter(GeneralParam.DOCUMENTATION.getName(), GeneralParam.DOCUMENTATION.getType()),
 						new SqlParameter(GeneralParam.COMENTARY.getName(), GeneralParam.COMENTARY.getType()),
 						new SqlParameter(GeneralParam.STATUS.getName(), GeneralParam.STATUS.getType()),
@@ -177,12 +175,11 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 		mapSqlParameterSource.addValue(GeneralParam.S_DATE.getName(), "");
 		mapSqlParameterSource.addValue(GeneralParam.OPERATION.getName(), operation);
 		mapSqlParameterSource.addValue(GeneralParam.MODE.getName(), mode);
-		mapSqlParameterSource.addValue(GeneralParam.LOGIN.getName(), profesional.getLogin());
-		mapSqlParameterSource.addValue(GeneralParam.TYPE.getName(), profesional.getType());
-		mapSqlParameterSource.addValue(ProfesionalParam.SPECIALITY.getName(), profesional.getSpecialty());
-		mapSqlParameterSource.addValue(GeneralParam.DOCUMENTATION.getName(), profesional.getDocumentation());
-		mapSqlParameterSource.addValue(GeneralParam.COMENTARY.getName(), profesional.getComentary());
-		mapSqlParameterSource.addValue(GeneralParam.STATUS.getName(), profesional.getStatus());
+		mapSqlParameterSource.addValue(GeneralParam.LOGIN.getName(), client.getLogin());
+		mapSqlParameterSource.addValue(ClientParam.DISEASE.getName(), client.getDisease());
+		mapSqlParameterSource.addValue(GeneralParam.DOCUMENTATION.getName(), client.getDocumentation());
+		mapSqlParameterSource.addValue(GeneralParam.COMENTARY.getName(), client.getComentary());
+		mapSqlParameterSource.addValue(GeneralParam.STATUS.getName(), client.getStatus());
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
 		int result = 0;

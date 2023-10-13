@@ -10,9 +10,9 @@ public interface IProfesionalRepository {
 
 	ProfesionalResponse findActives();
 
-	ProfesionalResponse ProfesionalByLogin(String login);
+	ProfesionalResponse profesionalByLogin(String login);
 
-	ProfesionalResponse ProfesionalByEmail(String email);
+	ProfesionalResponse profesionalByEmail(String email);
 
 	int save(Profesional profesional) throws BusinessException;
 

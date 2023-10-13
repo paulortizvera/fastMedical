@@ -49,7 +49,7 @@ begin
 			'COMENTARIO'          = comentario,
 			'VALOR_PROPUESTO'     = valor_propuesto,
 			'VALOR_ACEPTADO'      = valor_aceptado,
-			'FECHA_registro'      = fecha_registro,
+			'FECHA_REGISTRO'      = fecha_registro,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'ESTADO'              = estado,
 			'CLIENTE'             = id,
@@ -67,13 +67,13 @@ begin
 			'COMENTARIO'          = comentario,
 			'VALOR_PROPUESTO'     = valor_propuesto,
 			'VALOR_ACEPTADO'      = valor_aceptado,
-			'FECHA_registro'      = fecha_registro,
+			'FECHA_REGISTRO'      = fecha_registro,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'ESTADO'              = estado,
 			'CLIENTE'             = id,
 			'PROFESIONAL'         = codigo
 		from solicitud
-		where estado = 'A'
+		where estado = 'C'
 	end
 
 end
@@ -92,7 +92,7 @@ begin
 			'COMENTARIO'          = comentario,
 			'VALOR_PROPUESTO'     = valor_propuesto,
 			'VALOR_ACEPTADO'      = valor_aceptado,
-			'FECHA_registro'      = fecha_registro,
+			'FECHA_REGISTRO'      = fecha_registro,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'ESTADO'              = estado,
 			'CLIENTE'             = id,
@@ -111,7 +111,7 @@ begin
 			'COMENTARIO'          = comentario,
 			'VALOR_PROPUESTO'     = valor_propuesto,
 			'VALOR_ACEPTADO'      = valor_aceptado,
-			'FECHA_registro'      = fecha_registro,
+			'FECHA_REGISTRO'      = fecha_registro,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'ESTADO'              = estado,
 			'CLIENTE'             = id,
@@ -130,7 +130,7 @@ begin
 			'COMENTARIO'          = s.comentario,
 			'VALOR_PROPUESTO'     = s.valor_propuesto,
 			'VALOR_ACEPTADO'      = s.valor_aceptado,
-			'FECHA_registro'      = s.fecha_registro,
+			'FECHA_REGISTRO'      = s.fecha_registro,
 			'FECHA_MODIFICACION'  = s.fecha_modificacion,
 			'ESTADO'              = s.estado,
 			'CLIENTE'             = s.id,
@@ -150,7 +150,7 @@ begin
 			'COMENTARIO'          = comentario,
 			'VALOR_PROPUESTO'     = valor_propuesto,
 			'VALOR_ACEPTADO'      = valor_aceptado,
-			'FECHA_registro'      = fecha_registro,
+			'FECHA_REGISTRO'      = fecha_registro,
 			'FECHA_MODIFICACION'  = fecha_modificacion,
 			'ESTADO'              = estado,
 			'CLIENTE'             = id,
@@ -169,7 +169,7 @@ begin
 			'COMENTARIO'          = s.comentario,
 			'VALOR_PROPUESTO'     = s.valor_propuesto,
 			'VALOR_ACEPTADO'      = s.valor_aceptado,
-			'FECHA_registro'      = s.fecha_registro,
+			'FECHA_REGISTRO'      = s.fecha_registro,
 			'FECHA_MODIFICACION'  = s.fecha_modificacion,
 			'ESTADO'              = s.estado,
 			'CLIENTE'             = s.id,

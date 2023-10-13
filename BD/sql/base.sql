@@ -59,7 +59,7 @@ create table solicitud(
 	descripcion varchar(300) not null,
 	fecha_registro date not null,
 	fecha_modificacion date null,
-	comentario varchar(300) not null,
+	comentario varchar(300) null,
 	estado char(1) not null DEFAULT 'P',
 	id int not null,
 	codigo int NULL,

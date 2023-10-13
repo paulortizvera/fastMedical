@@ -17,7 +17,8 @@ public enum UserParam {
 	CITY("@i_ciudad", Types.VARCHAR),
 	ADDRESS("@i_direccion", Types.VARCHAR),
 	PHONE("@i_telefono", Types.VARCHAR),
-	BIRTHDATE("@i_fecha_nacimiento", Types.DATE),;
+	BIRTHDATE("@i_fecha_nacimiento", Types.DATE),
+	ROL("@i_rol", Types.VARCHAR);
 
 	private String name;
 	private int type;

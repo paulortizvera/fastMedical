@@ -16,7 +16,7 @@ go
 /**************************************************************************/
 
 create proc sp_fm_login
- ( @s_date        datetime, --Fecha
+ ( @s_date        date = null, --Fecha
    @i_operacion   char(1),
    @i_modo        int = null,
    @i_login       varchar(50) = null,
@@ -49,7 +49,7 @@ begin
 		else
 		begin
 			/* Validar vigencia de contraseña */
-			if exists(select 1 from usuario where estado <> 'A')
+			if exists(select 1 from usuario where login = @i_login and estado <> 'A')
 			begin
 				select  @w_error = 101, --El usuario no se encuentra activo
 				@w_return = 101

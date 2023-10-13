@@ -1,7 +1,5 @@
 package com.dioblazer.fast.medical.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +41,7 @@ public class ProfesionalService implements IProfesionalService {
 	public ProfesionalResponse ProfesionalByLogin(String login) {
 		ProfesionalResponse profesional;
 		try {
-			profesional = iProfesionalRepository.ProfesionalByLogin(login);
+			profesional = iProfesionalRepository.profesionalByLogin(login);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -54,13 +52,13 @@ public class ProfesionalService implements IProfesionalService {
 	public ProfesionalResponse ProfesionalByEmail(String email) {
 		ProfesionalResponse profesional;
 		try {
-			profesional = iProfesionalRepository.ProfesionalByEmail(email);
+			profesional = iProfesionalRepository.profesionalByEmail(email);
 		} catch (Exception e) {
 			throw e;
 		}
 		return profesional;
 	}
-	
+
 	@Override
 	public int save(Profesional profesional) throws BusinessException {
 		return iProfesionalRepository.save(profesional);

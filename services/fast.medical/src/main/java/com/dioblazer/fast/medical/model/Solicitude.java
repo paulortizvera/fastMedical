@@ -3,7 +3,6 @@ package com.dioblazer.fast.medical.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
 import lombok.AllArgsConstructor;
@@ -17,9 +16,8 @@ public class Solicitude implements Serializable {
 
 	private static final long serialVersionUID = -8262053509485539129L;
 
-	@Id
 	@Column(value = "numero")
-	private int numero;
+	private int number;
 
 	@Column(value = "direccion")
 	private String address;
@@ -55,9 +53,9 @@ public class Solicitude implements Serializable {
 	private String status;
 
 	@Column(value = "id")
-	private int id;
+	private int client;
 
 	@Column(value = "codigo")
-	private int code;
+	private int profesional;
 
 }

@@ -17,7 +17,6 @@ public enum GeneralParam {
 	TYPE("@i_tipo", Types.VARCHAR),
 	DOCUMENTATION("@i_documentacion", Types.VARCHAR),
 	COMENTARY("@i_comentario", Types.VARCHAR),
-	ROL("@i_rol", Types.VARCHAR),
 	STATUS("@i_estado", Types.VARCHAR),
 	ROWCOUNT("@o_rowcount", Types.INTEGER),
 	ERROR_MSG("@o_msg", Types.VARCHAR);

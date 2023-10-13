@@ -3,6 +3,7 @@ package com.dioblazer.fast.medical.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,7 @@ public class UserController {
 	@PostMapping("/add")
 	public ResponseEntity<ServiceResponse> save(@RequestBody User user) {
 		ServiceResponse resp = new ServiceResponse();
+		encryptPass(user);
 		resp.setSuccess(true);
 		try {
 			iUserService.save(user);
@@ -64,11 +66,12 @@ public class UserController {
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/{login}")
+	@PutMapping
 	public ResponseEntity<ServiceResponse> updateByLogin(@RequestBody User user) {
 		ServiceResponse resp = new ServiceResponse();
 		resp.setSuccess(true);
 		try {
+			encryptPass(user);
 			iUserService.updateByLogin(user);
 		} catch (BusinessException e) {
 			resp.setSuccess(false);
@@ -118,5 +121,10 @@ public class UserController {
 			return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(resp, HttpStatus.OK);
+	}
+
+	/* Encriptar contraseña */
+	private void encryptPass(User user) {
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 	}
 }

@@ -67,8 +67,8 @@ begin
 		goto errors
 	end
 
-	insert into usuario(login, nombre, sexo, pais, ciudad, direccion, telefono, correo, fecha_nacimiento, fecha_registro, rol, estado)
-	values (@i_login, @i_nombre, @i_sexo, @i_pais, @i_ciudad, @i_direccion, @i_telefono, @i_correo, @i_fecha_nacimiento, GETDATE(), 'C', 'P')
+	insert into usuario(login, contrasena, nombre, sexo, pais, ciudad, direccion, telefono, correo, fecha_nacimiento, fecha_registro, rol, estado)
+	values (@i_login, @i_contrasena, @i_nombre, @i_sexo, @i_pais, @i_ciudad, @i_direccion, @i_telefono, @i_correo, @i_fecha_nacimiento, GETDATE(), 'C', 'P')
 
 	select @o_rowcount = 1
 
@@ -103,6 +103,7 @@ begin
 		end
 
 		update usuario set
+			contrasena         = @i_contrasena,
 			nombre             = @i_nombre,
 			sexo               = @i_sexo,
 			pais               = @i_pais,
