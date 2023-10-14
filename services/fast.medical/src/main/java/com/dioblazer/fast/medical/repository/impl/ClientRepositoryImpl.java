@@ -31,7 +31,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 	@Override
 	public ClientResponse findAll() {
 		ClientResponse resp = new ClientResponse();
-		resp.setClient(execQueryClient("S", "0", null, null));
+		resp.setClient(execQueryClient(Constants.SEARCH.getName(), "0", null, null));
 		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -45,7 +45,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 	@Override
 	public ClientResponse findActives() {
 		ClientResponse resp = new ClientResponse();
-		resp.setClient(execQueryClient("S", "1", null, null));
+		resp.setClient(execQueryClient(Constants.SEARCH.getName(), "1", null, null));
 		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -59,7 +59,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 	@Override
 	public ClientResponse clientByLogin(String login) {
 		ClientResponse resp = new ClientResponse();
-		resp.setClient(execQueryClient("Q", "0", login, null));
+		resp.setClient(execQueryClient(Constants.QUERY.getName(), "0", login, null));
 		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -73,7 +73,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 	@Override
 	public ClientResponse clientByEmail(String email) {
 		ClientResponse resp = new ClientResponse();
-		resp.setClient(execQueryClient("Q", "1", null, email));
+		resp.setClient(execQueryClient(Constants.QUERY.getName(), "1", null, email));
 		if (resp.getClient() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -86,29 +86,29 @@ public class ClientRepositoryImpl implements IClientRepository {
 
 	@Override
 	public int save(Client client) throws BusinessException {
-		return execAdmClient("I", null, client, null);
+		return execAdmClient(Constants.INSERT.getName(), null, client, null);
 	}
 
 	@Override
 	public int updateByLogin(Client client) throws BusinessException {
-		return execAdmClient("U", "0", client, null);
+		return execAdmClient(Constants.UPDATE.getName(), "0", client, null);
 	}
 
 	@Override
 	public int deleteByLogin(String login) throws BusinessException {
 		Client client = new Client();
 		client.setLogin(login);
-		return execAdmClient("D", null, client, null);
+		return execAdmClient(Constants.DELETE.getName(), null, client, null);
 	}
 
 	@Override
 	public int updateDocumentation(String loginAdm, Client client) throws BusinessException {
-		return execAdmClient("U", "1", client, loginAdm);
+		return execAdmClient(Constants.UPDATE.getName(), "1", client, loginAdm);
 	}
 
 	@Override
 	public int updateStatus(String loginAdm, Client client) throws BusinessException {
-		return execAdmClient("U", "2", client, loginAdm);
+		return execAdmClient(Constants.UPDATE.getName(), "2", client, loginAdm);
 	}
 
 	private <T> T execQueryClient(String operation, String mode, String login, String email) {
@@ -120,7 +120,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 						new SqlParameter(GeneralParam.MODE.getName(), GeneralParam.MODE.getType()),
 						new SqlParameter(GeneralParam.LOGIN.getName(), GeneralParam.LOGIN.getType()),
 						new SqlParameter(GeneralParam.EMAIL.getName(), GeneralParam.EMAIL.getType()) })
-				.returningResultSet("result", new RowMapper<Client>() {
+				.returningResultSet(Constants.RESULT.getName(), new RowMapper<Client>() {
 
 					@Override
 					public Client mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -148,7 +148,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 		mapSqlParameterSource.addValue(GeneralParam.EMAIL.getName(), email);
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
-		List<Client> client = (List<Client>) results.get("result");
+		List<Client> client = (List<Client>) results.get(Constants.RESULT.getName());
 
 		return client != null && !client.isEmpty() ? (T) client : null;
 	}

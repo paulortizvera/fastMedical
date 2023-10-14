@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements IUserRepository {
 	@Override
 	public UserResponse findAll() {
 		UserResponse resp = new UserResponse();
-		resp.setUser(execQueryUser("S", "0", null, null));
+		resp.setUser(execQueryUser(Constants.SEARCH.getName(), "0", null, null));
 		if (resp.getUser() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -51,7 +51,7 @@ public class UserRepositoryImpl implements IUserRepository {
 	@Override
 	public UserResponse findActives() {
 		UserResponse resp = new UserResponse();
-		resp.setUser(execQueryUser("S", "1", null, null));
+		resp.setUser(execQueryUser(Constants.SEARCH.getName(), "1", null, null));
 		if (resp.getUser() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -65,7 +65,7 @@ public class UserRepositoryImpl implements IUserRepository {
 	@Override
 	public UserResponse userByLogin(String login) {
 		UserResponse resp = new UserResponse();
-		resp.setUser(execQueryUser("Q", "0", login, null));
+		resp.setUser(execQueryUser(Constants.QUERY.getName(), "0", login, null));
 		if (resp.getUser() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -79,7 +79,7 @@ public class UserRepositoryImpl implements IUserRepository {
 	@Override
 	public UserResponse userByEmail(String email) {
 		UserResponse resp = new UserResponse();
-		resp.setUser(execQueryUser("Q", "1", null, email));
+		resp.setUser(execQueryUser(Constants.QUERY.getName(), "1", null, email));
 		if (resp.getUser() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -92,29 +92,29 @@ public class UserRepositoryImpl implements IUserRepository {
 
 	@Override
 	public int save(User user) throws BusinessException {
-		return execAdmUser("I", null, user, null);
+		return execAdmUser(Constants.INSERT.getName(), null, user, null);
 	}
 
 	@Override
 	public int updateByLogin(User user) throws BusinessException {
-		return execAdmUser("U", "0", user, null);
+		return execAdmUser(Constants.UPDATE.getName(), "0", user, null);
 	}
 
 	@Override
 	public int deleteByLogin(String login) throws BusinessException {
 		User user = new User();
 		user.setLogin(login);
-		return execAdmUser("D", null, user, null);
+		return execAdmUser(Constants.DELETE.getName(), null, user, null);
 	}
 
 	@Override
 	public int updateRol(String loginAdm, User user) throws BusinessException {
-		return execAdmUser("U", "1", user, loginAdm);
+		return execAdmUser(Constants.UPDATE.getName(), "1", user, loginAdm);
 	}
 
 	@Override
 	public int updateStatus(String loginAdm, User user) throws BusinessException {
-		return execAdmUser("U", "2", user, loginAdm);
+		return execAdmUser(Constants.UPDATE.getName(), "2", user, loginAdm);
 	}
 
 	private Optional<User> execLogin(String login) {
@@ -129,7 +129,7 @@ public class UserRepositoryImpl implements IUserRepository {
 						new SqlParameter(UserParam.OTP.getName(), UserParam.OTP.getType()),
 						new SqlParameter(UserParam.OTP_TYPE.getName(), UserParam.OTP_TYPE.getType()),
 						new SqlOutParameter(GeneralParam.ERROR_MSG.getName(), GeneralParam.ERROR_MSG.getType()) })
-				.returningResultSet("result", new RowMapper<User>() {
+				.returningResultSet(Constants.RESULT.getName(), new RowMapper<User>() {
 
 					@Override
 					public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -144,7 +144,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue(GeneralParam.S_DATE.getName(), "");
-		mapSqlParameterSource.addValue(GeneralParam.OPERATION.getName(), "S");
+		mapSqlParameterSource.addValue(GeneralParam.OPERATION.getName(), Constants.SEARCH.getName());
 		mapSqlParameterSource.addValue(GeneralParam.MODE.getName(), "0");
 		mapSqlParameterSource.addValue(GeneralParam.LOGIN.getName(), login);
 		mapSqlParameterSource.addValue(UserParam.PASSWORD.getName(), "");
@@ -154,7 +154,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
 
-		List<User> userList = (List<User>) results.get("result");
+		List<User> userList = (List<User>) results.get(Constants.RESULT.getName());
 
 		return Optional.of(userList.get(0));
 	}
@@ -170,7 +170,7 @@ public class UserRepositoryImpl implements IUserRepository {
 						new SqlParameter(GeneralParam.EMAIL.getName(), GeneralParam.EMAIL.getType()),
 						new SqlParameter(UserParam.PASSWORD.getName(), UserParam.PASSWORD.getType()),
 						new SqlParameter(UserParam.OTP.getName(), UserParam.OTP.getType()) })
-				.returningResultSet("result", new RowMapper<User>() {
+				.returningResultSet(Constants.RESULT.getName(), new RowMapper<User>() {
 
 					@Override
 					public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -206,7 +206,7 @@ public class UserRepositoryImpl implements IUserRepository {
 		mapSqlParameterSource.addValue(UserParam.OTP.getName(), "");
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
-		List<User> usersList = (List<User>) results.get("result");
+		List<User> usersList = (List<User>) results.get(Constants.RESULT.getName());
 
 		return usersList != null && !usersList.isEmpty() ? (T) usersList : null;
 	}

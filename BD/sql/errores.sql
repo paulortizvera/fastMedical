@@ -23,6 +23,7 @@ insert into errores values (203, 'El usuario no tiene permisos para actualizar r
 insert into errores values (204, 'El usuario no tiene permisos para actualizar estados', 0)
 insert into errores values (205, 'El usuario no tiene permisos para actualizar documentacion', 0)
 insert into errores values (206, 'El usuario a eliminar no existe', 0)
+insert into errores values (207, 'El usuario no tiene permisos para asignar el rol seleccionado', 0)
 
 /* 3 - profesionales */
 insert into errores values (300, 'El login ya existe como profesional', 0)

@@ -31,7 +31,7 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	@Override
 	public ProfesionalResponse findAll() {
 		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("S", "0", null, null));
+		resp.setProfesional(execQueryProfesional(Constants.SEARCH.getName(), "0", null, null));
 		if (resp.getProfesional() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -45,7 +45,7 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	@Override
 	public ProfesionalResponse findActives() {
 		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("S", "1", null, null));
+		resp.setProfesional(execQueryProfesional(Constants.SEARCH.getName(), "1", null, null));
 		if (resp.getProfesional() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -59,7 +59,7 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	@Override
 	public ProfesionalResponse profesionalByLogin(String login) {
 		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("Q", "0", login, null));
+		resp.setProfesional(execQueryProfesional(Constants.QUERY.getName(), "0", login, null));
 		if (resp.getProfesional() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -73,7 +73,7 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 	@Override
 	public ProfesionalResponse profesionalByEmail(String email) {
 		ProfesionalResponse resp = new ProfesionalResponse();
-		resp.setProfesional(execQueryProfesional("Q", "1", null, email));
+		resp.setProfesional(execQueryProfesional(Constants.QUERY.getName(), "1", null, email));
 		if (resp.getProfesional() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -86,29 +86,29 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 
 	@Override
 	public int save(Profesional profesional) throws BusinessException {
-		return execAdmProfesional("I", null, profesional, null);
+		return execAdmProfesional(Constants.INSERT.getName(), null, profesional, null);
 	}
 
 	@Override
 	public int updateByLogin(Profesional profesional) throws BusinessException {
-		return execAdmProfesional("U", "0", profesional, null);
+		return execAdmProfesional(Constants.UPDATE.getName(), "0", profesional, null);
 	}
 
 	@Override
 	public int deleteByLogin(String login) throws BusinessException {
 		Profesional profesional = new Profesional();
 		profesional.setLogin(login);
-		return execAdmProfesional("D", null, profesional, null);
+		return execAdmProfesional(Constants.DELETE.getName(), null, profesional, null);
 	}
 
 	@Override
 	public int updateDocumentation(String loginAdm, Profesional profesional) throws BusinessException {
-		return execAdmProfesional("U", "1", profesional, loginAdm);
+		return execAdmProfesional(Constants.UPDATE.getName(), "1", profesional, loginAdm);
 	}
 
 	@Override
 	public int updateStatus(String loginAdm, Profesional profesional) throws BusinessException {
-		return execAdmProfesional("U", "2", profesional, loginAdm);
+		return execAdmProfesional(Constants.UPDATE.getName(), "2", profesional, loginAdm);
 	}
 
 	private <T> T execQueryProfesional(String operation, String mode, String login, String email) {
@@ -120,7 +120,7 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 						new SqlParameter(GeneralParam.MODE.getName(), GeneralParam.MODE.getType()),
 						new SqlParameter(GeneralParam.LOGIN.getName(), GeneralParam.LOGIN.getType()),
 						new SqlParameter(GeneralParam.EMAIL.getName(), GeneralParam.EMAIL.getType()) })
-				.returningResultSet("result", new RowMapper<Profesional>() {
+				.returningResultSet(Constants.RESULT.getName(), new RowMapper<Profesional>() {
 
 					@Override
 					public Profesional mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -149,7 +149,7 @@ public class ProfesionalRepositoryImpl implements IProfesionalRepository {
 		mapSqlParameterSource.addValue(GeneralParam.EMAIL.getName(), email);
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
-		List<Profesional> profesional = (List<Profesional>) results.get("result");
+		List<Profesional> profesional = (List<Profesional>) results.get(Constants.RESULT.getName());
 
 		return profesional != null && !profesional.isEmpty() ? (T) profesional : null;
 	}

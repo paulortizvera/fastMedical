@@ -125,6 +125,13 @@ begin
 			@w_return = 203
 			goto errors
 		end
+		/* Validar rol */
+		if (@i_rol = 'A')
+		begin
+			select  @w_error = 207, --El usuario no tiene permisos para asignar el rol seleccionado
+			@w_return = 207
+			goto errors
+		end
 		
 		update usuario set
 			rol = @i_rol

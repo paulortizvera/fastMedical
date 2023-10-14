@@ -1,0 +1,1425 @@
+{
+	"info": {
+		"_postman_id": "3a4a18ed-3fb7-49ce-a863-347880e54985",
+		"name": "TFM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30472445"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"admin\",\r\n    \"password\": \"fastMedical\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Consultas",
+					"item": [
+						{
+							"name": "Listar Todos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MzI5Mjk4LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.HB2odXVneVTJpsZ2kxTiKPVZce3wBsTwwCv7KhDygjVABS6CYx5Tv35AXDyRq3Yxa1fdyES3wuMcG2VYGtZhEw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Activos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/user/listActives",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"listActives"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Correo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/user/email/mauricio_14147@gmail.com",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"email",
+										"mauricio_14147@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Login",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/user/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Administración",
+					"item": [
+						{
+							"name": "Agregar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisordos\",\r\n    \"name\": \"REVISOR DOS\",\r\n    \"gender\": \"M\",\r\n    \"country\": \"Ecuador\",\r\n    \"city\": \"Quito\",\r\n    \"address\": \"Quito\",\r\n    \"phone\": \"0981691113\",\r\n    \"email\": \"revisorDOS@gmail.com\",\r\n    \"birthDate\": \"1993-09-14\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/user/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MjU4NTYwLCJuYW1lIjoiUGF1bCBPcnRpeiJ9.jrYo0pf5zUjaVAY8MCicGd8mC1jvk2lZhLoSDXIPbYavpIIPhdzbtL0cAKOknERCA8SE7TOdmldcFMuakuuhnQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"password\": \"contraNueva\",\r\n    \"name\": \"REVISOR UNO\",\r\n    \"gender\": \"M\",\r\n    \"country\": \"Ecuador\",\r\n    \"city\": \"Quito\",\r\n    \"address\": \"Quito\",\r\n    \"phone\": \"0981691113\",\r\n    \"birthDate\": \"1993-09-14\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/user/revisordos",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"revisordos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Rol",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"rol\": \"C\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/user/rol/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"rol",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Estado",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"status\": \"P\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/user/status/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"status",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Profesional",
+			"item": [
+				{
+					"name": "Consultas",
+					"item": [
+						{
+							"name": "Listar Todos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/profesional",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Activos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/listActives",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"listActives"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Correo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/email/mauricio_14147@gmail.com",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"email",
+										"mauricio_14147@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Login",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Administración",
+					"item": [
+						{
+							"name": "Agregar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"type\": \"E\",\r\n    \"specialty\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"type\": \"E\",\r\n    \"specialty\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/profesional",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/revisor",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"revisor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Documentacion",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"documentation\": \"S\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/documentation/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"documentation",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Estado",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"status\": \"A\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/status/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"status",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Consultas",
+					"item": [
+						{
+							"name": "Listar Todos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/client",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Activos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/client/listActives",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"client",
+										"listActives"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Correo",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/client/email/mauricio_14147@gmail.com",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"client",
+										"email",
+										"mauricio_14147@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Login",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/client/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"client",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Administración",
+					"item": [
+						{
+							"name": "Agregar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"disease\": \"D\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/client/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"client",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"disease\": \"Diabetes\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/client",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Documentacion",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"documentation\": \"S\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/documentation/revisor",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"documentation",
+										"revisor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Estado",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login\": \"revisor\",\r\n    \"status\": \"A\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/status/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"status",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Solicitud",
+			"item": [
+				{
+					"name": "Consultas",
+					"item": [
+						{
+							"name": "Listar Todos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Completados",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/listComplete",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"listComplete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Numero",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Cliente",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/client/3",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"client",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Login de Cliente",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/client/login/revisor",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"client",
+										"login",
+										"revisor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Cliente Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/profesional/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"profesional",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por Login de Cliente Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/client/login/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"client",
+										"login",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Administración",
+					"item": [
+						{
+							"name": "Agregar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"address\": \"Av. Colon y calle Freire\",\r\n    \"latitude\": \"-0.187160\",\r\n    \"longitude\": \"-78.489620\",\r\n    \"type\": \"E\",\r\n    \"proposedValue\": 56.32,\r\n    \"description\": \"Llamar y traer oximetro\",\r\n    \"client\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/add",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"number\": 2,\r\n    \"address\": \"Av. Colon y calle Freire\",\r\n    \"latitude\": \"-0.187160\",\r\n    \"longitude\": \"-78.489620\",\r\n    \"type\": \"E\",\r\n    \"proposedValue\": 100.32,\r\n    \"description\": \"Llamar y traer oximetro\",\r\n    \"client\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/profesional/admin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"profesional",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Aceptar",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"number\": 1,\r\n    \"aceptedValue\": 120,\r\n    \"profesional\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/acept",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"acept"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Estado",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJQYXVsIE9ydGl6IiwiZXhwIjoxNjk3MTY5NzU5LCJuYW1lIjoiUGF1bCBPcnRpeiJ9.mUAo1H3tV8ocyLlEHZxEObNMBI7DloCTXn-IV2tuWhtzpLS1e67qFb3wnjnsDl8ZCEDzEfX1MR0PtavQ1ZgPlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"number\": 1,\r\n    \"status\": \"C\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/solicitude/status",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"solicitude",
+										"status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

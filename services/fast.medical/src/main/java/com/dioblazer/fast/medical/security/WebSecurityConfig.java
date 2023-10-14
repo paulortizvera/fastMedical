@@ -31,7 +31,7 @@ public class WebSecurityConfig {
 		return http
 				.csrf().disable()
 				.authorizeRequests()
-				.requestMatchers("/reset", "/recover").permitAll()
+				.requestMatchers("api/v1/user/add", "/recover").permitAll()
 				.anyRequest()
 				.authenticated()
 				.and()

@@ -31,7 +31,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 	@Override
 	public SolicitudeResponse findAll() {
 		SolicitudeResponse resp = new SolicitudeResponse();
-		resp.setSolicitude(execQuerySolicitude("S", "0", null, null, null, null, null));
+		resp.setSolicitude(execQuerySolicitude(Constants.SEARCH.getName(), "0", null, null, null, null, null));
 		if (resp.getSolicitude() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -45,7 +45,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 	@Override
 	public SolicitudeResponse findComplete() {
 		SolicitudeResponse resp = new SolicitudeResponse();
-		resp.setSolicitude(execQuerySolicitude("S", "1", null, null, null, null, null));
+		resp.setSolicitude(execQuerySolicitude(Constants.SEARCH.getName(), "1", null, null, null, null, null));
 		if (resp.getSolicitude() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -59,7 +59,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 	@Override
 	public SolicitudeResponse solicitudeByNumber(Integer number) {
 		SolicitudeResponse resp = new SolicitudeResponse();
-		resp.setSolicitude(execQuerySolicitude("Q", "0", number, null, null, null, null));
+		resp.setSolicitude(execQuerySolicitude(Constants.QUERY.getName(), "0", number, null, null, null, null));
 		if (resp.getSolicitude() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -73,7 +73,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 	@Override
 	public SolicitudeResponse solicitudeByClient(Integer client) {
 		SolicitudeResponse resp = new SolicitudeResponse();
-		resp.setSolicitude(execQuerySolicitude("Q", "1", null, client, null, null, null));
+		resp.setSolicitude(execQuerySolicitude(Constants.QUERY.getName(), "1", null, client, null, null, null));
 		if (resp.getSolicitude() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -87,7 +87,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 	@Override
 	public SolicitudeResponse solicitudeByClientLogin(String loginCli) {
 		SolicitudeResponse resp = new SolicitudeResponse();
-		resp.setSolicitude(execQuerySolicitude("Q", "2", null, null, null, loginCli, null));
+		resp.setSolicitude(execQuerySolicitude(Constants.QUERY.getName(), "2", null, null, null, loginCli, null));
 		if (resp.getSolicitude() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -101,7 +101,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 	@Override
 	public SolicitudeResponse solicitudeByProfesional(Integer profesional) {
 		SolicitudeResponse resp = new SolicitudeResponse();
-		resp.setSolicitude(execQuerySolicitude("Q", "3", null, null, profesional, null, null));
+		resp.setSolicitude(execQuerySolicitude(Constants.QUERY.getName(), "3", null, null, profesional, null, null));
 		if (resp.getSolicitude() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -115,7 +115,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 	@Override
 	public SolicitudeResponse solicitudeByProfesionalLogin(String loginCli) {
 		SolicitudeResponse resp = new SolicitudeResponse();
-		resp.setSolicitude(execQuerySolicitude("Q", "4", null, null, null, null, loginCli));
+		resp.setSolicitude(execQuerySolicitude(Constants.QUERY.getName(), "4", null, null, null, null, loginCli));
 		if (resp.getSolicitude() != null) {
 			resp.setSuccess(true);
 		} else {
@@ -128,29 +128,29 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 
 	@Override
 	public int save(Solicitude solicitude) throws BusinessException {
-		return execAdmSolicitude("I", null, solicitude);
+		return execAdmSolicitude(Constants.INSERT.getName(), null, solicitude);
 	}
 
 	@Override
 	public int updateByNumber(Solicitude solicitude) throws BusinessException {
-		return execAdmSolicitude("U", "0", solicitude);
+		return execAdmSolicitude(Constants.UPDATE.getName(), "0", solicitude);
 	}
 
 	@Override
 	public int deleteByNumber(Integer number) throws BusinessException {
 		Solicitude solicitude = new Solicitude();
 		solicitude.setNumber(number);
-		return execAdmSolicitude("D", null, solicitude);
+		return execAdmSolicitude(Constants.DELETE.getName(), null, solicitude);
 	}
 
 	@Override
 	public int aceptSolicitude(Solicitude solicitude) throws BusinessException {
-		return execAdmSolicitude("U", "1", solicitude);
+		return execAdmSolicitude(Constants.UPDATE.getName(), "1", solicitude);
 	}
 
 	@Override
 	public int updateStatus(Solicitude solicitude) throws BusinessException {
-		return execAdmSolicitude("U", "2", solicitude);
+		return execAdmSolicitude(Constants.UPDATE.getName(), "2", solicitude);
 	}
 
 	private <T> T execQuerySolicitude(String operation, String mode, Integer number, Integer client,
@@ -166,7 +166,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 						new SqlParameter(SolicitudeParam.PROFESIONAL.getName(), SolicitudeParam.PROFESIONAL.getType()),
 						new SqlParameter(SolicitudeParam.LOGIN_CLI.getName(), SolicitudeParam.LOGIN_CLI.getType()),
 						new SqlParameter(SolicitudeParam.LOGIN_PRO.getName(), SolicitudeParam.LOGIN_PRO.getType()) })
-				.returningResultSet("result", new RowMapper<Solicitude>() {
+				.returningResultSet(Constants.RESULT.getName(), new RowMapper<Solicitude>() {
 
 					@Override
 					public Solicitude mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -200,7 +200,7 @@ public class SolicitudeRepositoryImpl implements ISolicitudeRepository {
 		mapSqlParameterSource.addValue(SolicitudeParam.LOGIN_PRO.getName(), login_pro);
 
 		Map<String, Object> results = simpleJdbcCall.execute(mapSqlParameterSource);
-		List<Solicitude> solicitude = (List<Solicitude>) results.get("result");
+		List<Solicitude> solicitude = (List<Solicitude>) results.get(Constants.RESULT.getName());
 
 		return solicitude != null && !solicitude.isEmpty() ? (T) solicitude : null;
 	}

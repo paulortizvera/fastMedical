@@ -10,8 +10,13 @@ public enum Constants {
 	INTERNAL_ERROR("Error interno de la aplicación, consulte con el administrador."),
 	NO_REGISTERS("No se encontraron registros."),
 	/* Operaciones */
-	OPERATION_S("S"),
-	
+	SEARCH("S"),
+	QUERY("Q"),
+	INSERT("I"),
+	UPDATE("U"),
+	DELETE("D"),
+	/* Parametros */
+	RESULT("result"),
 	/* SPs */
 	SP_LOGIN("sp_fm_login"),
 	SP_CONS_USER("sp_fm_cons_usuario"),
